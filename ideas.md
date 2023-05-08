@@ -1,17 +1,18 @@
 
 
 ## My ideas (brainstorming):
-    - PDF
-        - data extractor
-        - viewer
-        - editor
-    - Markup language
-        - to HTML
-        - both HTML and CSS
-    - Images
-        - QOI format own implementation
-        - WEBP format
-        - Raster to vector graphics converter
+
+- PDF
+    - data extractor
+    - viewer
+    - editor
+- Markup language
+    - to HTML
+    - both HTML and CSS
+- Images
+    - QOI format own implementation
+    - WEBP format
+    - Raster to vector graphics converter
 
 
 ## Concrete propositions:
