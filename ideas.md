@@ -57,3 +57,23 @@
 
 
 
+
+## Explanations
+
+### Idea 2: Markup + Styling language
+
+I really enjoy writing in languages like markdown, where one can easily read and write the source code and it can produce a nice looking HTML page or PDF. As soon as you try to add some styling though, you find yourself typing HTML and embedded CSS and all of md's advantages are lost.
+Latex has similar problems, it can get very quickly very unreadable.
+After a quick google search I didn't really find other markup/styling languages that would be as easy to use as markdown and support an easy way to do some basic styling like changing font, color of bg/fg, centering text etc.
+My idea was, to create a own markup language, maybe a superset of markdown, and add some easy to learn and remember styling capabilities to it.
+
+A syntax example for what I am thinking about is found in the file [syntax\_example.md](syntax_example.md)
+
+### Idea 3
+
+
+
+
+
+
+
