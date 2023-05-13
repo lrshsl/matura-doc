@@ -1,17 +1,18 @@
 
 
 ## My ideas (brainstorming):
-    - PDF
-        - data extractor
-        - viewer
-        - editor
-    - Markup language
-        - to HTML
-        - both HTML and CSS
-    - Images
-        - QOI format own implementation
-        - WEBP format
-        - Raster to vector graphics converter
+
+- PDF
+    - data extractor
+    - viewer
+    - editor
+- Markup language
+    - to HTML
+    - both HTML and CSS
+- Images
+    - QOI format own implementation
+    - WEBP format
+    - Raster to vector graphics converter
 
 
 ## Concrete propositions:
@@ -31,14 +32,14 @@
     - In any language
     - Source language
         - Plan a simple & flexible syntax
-        - Use already existing languages as a base (markdown, HTML, CSS)
+        - Use already existing languages as a base (markdown, HTML, CSS, org)
     - Target language
         - HTML, CSS with bootstrap
     - Write a transpiler using the same techniques as real com-/transpilers
         - I already looked into that area
         - There are many utilities for lexing/parsing etc
             - One could work with regexes/BNF parsers
-            - C/C++ : Flex & Bison  (I have some experience with that)
+            - C/C++ : Flex & Bison  (I have some experience with that; It would be at least possible)
             - Rust : I know Rust quite well and I've read that Rust has great libraries for parsing, but I never used them
             - The language Haskell itself is known to be very suitible (don't really know it but would be interested)
 

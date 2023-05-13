@@ -1,0 +1,22 @@
+#!syntax_example.txt
+
+
+# Heading like in markdown
+## h2
+### h3
+
+# Centered Heading [center]
+
+// Comments
+
+1. Sorted
+2. List
+  - Unsorted
+  - Sub-list
+
+[not numbered]
+1. Sorted
+2. But not numbered
+3. List
+
+<yellow> Colored Text <end yellow>
