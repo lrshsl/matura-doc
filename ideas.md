@@ -70,7 +70,7 @@ After a quick google search I didn't really find other markup/styling languages 
 My idea was, to create a own markup language, maybe a superset of markdown, and add some easy to learn and remember styling capabilities to it.
 I'm also thinking about adding some more features such as variables (probably just copy-paste variables like in Makefiles) and imports (also basic copy-paste).
 
-A syntax example for what I am thinking about is found in the file [syntax\_example.md](syntax_example.md)
+A syntax example for what I am thinking about is found in the file [syntax\_example.txt](syntax_example.txt)
 
 
 ### Idea 3
