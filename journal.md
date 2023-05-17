@@ -26,4 +26,6 @@
 
 ### Tuesday 16. May
 - Made a model that works with data with comparable structure (stage1_1)
-- Tried to make a 
+- Tried to train that model on images that vary in brightness instead in shapes
+  - Even after adapting the models and loss function, I couldn't make the accuracy rise above 0.5
+  - The problem must be in the code or the loss function, because the loss is minimized quite well
