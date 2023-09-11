@@ -50,7 +50,7 @@ I've now been researching about existing approaches to tackle the problems I enc
 
 During the summer break I had dedicated one week for the matura work. I used this time, as well as the weekends that followed, to experiment more with the different tooling that is available for the task I'm trying to accomplish. Below I made a short overview of what I tried during the time since the last entry in the journal:
 
-1. Tried alternative programming languages
+**1. Tried alternative programming languages**
 
 I wasn't directly content with the language I had chosen. I decided to go with Python, since it is a common option for machine learning, especially for research in deep learning. It had all the necessary features that I was looking for:
   - A rich ecosystem for deep learing and working with neural networks with [keras](keras.io), [tensorflow](tensorflow.org) and [pytorch](pytorch.org)
@@ -73,17 +73,17 @@ Since this whole kind of errors would not occur in any statically typed language
 
 I quickly figured that with Cython I'd still have to use either the CPython libraries, which wouldn't solve my type problem, or C or C++ libraries or APIs, which would be interesting, since it would allow to freely switch between Python and C or C++. So I started to learn how to use them, but when I wanted to start using tensorflow, I found out that neither the tensorflow nor the pytorch (libtorch) APIs were well documented.
 
-2. Tried alternative libraries
+**2. Tried alternative libraries**
 
 Namely pytorch, which I might be using in the final work, the C API of pytorch (libtorch) and the C++ API of tensorflow.
 
-4. Writing the first module
+**4. Writing the first module**
 
 After settling again on Python, this time using pytorch, I started from new with the most fundamental part of my work, the image data generation. I made it as flexible as possible, but focused on creating only fundamental shapes like lines, triangles and rectangles.
 
 This module is finished for now and hosted on this [colab notebook](https://colab.research.google.com/drive/1-fSj53ovF_mBpm0iTp_xe3qUnlNCpF04?usp=sharing).
 
-4. Writing a clearly defined concept
+**5. Writing a clearly defined concept**
 This is the part I'm currently at. In a meeting with Beat Temperli, he poposed this idea. So before I continue much longer writing code I won't need, I intend to clearly make up my mind about what exactly I want to do, the scope of my work and a schedule. I also want to evaluate which language and deep learning library I'm going to use.
 
 
