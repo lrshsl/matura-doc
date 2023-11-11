@@ -1,5 +1,6 @@
 \documentclass[12pt, a4paper, titlepage]{report}
 \usepackage{graphicx}
+\usepackage{enumitem}
 \usepackage{listings}
 
 
@@ -18,7 +19,7 @@
     \centering
 
 	 % Title
-    \Huge{\textbf{Maturaarbeit}}
+    \Huge{\textbf{\inserttitle}}
     \par
     \LARGE{\insertauthor}
 
@@ -37,21 +38,24 @@
 
 \chapter{Introduction}
 
-Images have become an important part of everyday live. Most of which are stored digitally, thus making the search for effective storage of images an essential, well researched aspect of computer science.
-Many different formats and compression have emerged, which can be categorized into two main categories - vector and raster formats.
+Images have become an important part of everyday live, most of which are stored digitally, which is making the search for effective storage of images an essential, well researched aspect of computer science.
+Many different formats and compression have emerged, the most influential of which can be categorized into two main categories - vector and raster formats.
 
 \section{Vector and raster graphics}
 
-Vector and raster graphics are two fundamentally different approaches on how to represent the content of an image, both of which have advantages in representing a certain kind of image. While raster images tend to store or approximate small parts of a given picture to approximate what it looks like, vector formats rather store a specification for what is displayed in an image, similar to how humans describe images.
+Vector and raster graphics are two fundamentally different approaches on how to represent the content of an image. Both have advantages in representing a certain kind of image, and are less appropriate in other situations. While raster images store the color values of small parts of a given picture - often called pixels - to approximate what the image looks like, vector formats rather store a specification for what shapes can be seen, similar to how humans describe images.
 
-Both methods have pros and cons, and are more appropriate for certain situations than others. Vector formats are ideal for images that are easily describable in shapes, especially those made up of one-colored areas. In such cases, vector graphics can describe those shapes more precise, without pixels, and are less storage intense. Raster formats in turn are better suited for images without easily distinguishable shapes, such as portraits or landcape images.
+Both methods have pros and cons, and are more appropriate for certain situations than others. But vector formats have many advantages for storing images that are easily describable in shapes, especially shapes made up of one-colored areas or easily describable gradients. In such cases, vector graphics can represent those shapes more precise, with infinite resolution, while being less storage intensive at the same time. Raster formats in turn are better suited for images without easily distinguishable shapes, such as portraits or landcape images.
 
-While format conversions among raster or vector formats and from vector to raster graphics can be done with a multitude of programs, the conversion from a raster image to a vector representation proves more challenging, especially because shapes have to be recognized.
+While format conversions among raster or vector formats and from vector to raster graphics can be done with a multitude of programs, the conversion from a raster image to a vector representation proves to bee more challenging, especially because the shapes and their features seen in the input image have to be recognized, which is not a easily solvable problem. Many factors can make it much more difficult, such as contrasts in different strengths, noise, and gradients that make it impossible to work with fixed thresholds to detect the contoures of shapes. With different manipulations, that one can apply to a given image, edge detection is made possible. That does not solve the problem though, since the composition of those edges still is difficult to do algorithmically.
+With deep learning those problems can somewhat be overcome, since the model itself can recognize the shapes, in a similar manner as humans do. Deep learning models have their own difficulties, of which accumulating training data is a big limitation.
 
-Therefore a way to convert raster images into a vector format can be beneficial, and is not yet a solved problem.
+Therefore a way to convert raster images into a vector format is beneficial, and is not yet a solved problem. This is why I have chosen to do my matura thesis on the topic of raster to vector conversion.
 
 
 \section{Existing approaches}
+
+Raster to vector conversion is a well researched field, and there are many different approaches on how to do it. Apart from algorithm based strategies, machine learning and particularly neural networks are promising and in active development. 
 
 \section{Architecture of neural networks}
 
@@ -59,7 +63,7 @@ Deep neural networks can be structured in different ways, leading to different k
 
 \subsection{Convolutional neural network}
 
-A convolutional neural network (CNN) is a type of neural network that uses a convolutional layer to extract features from an input image. It is useful to reduce the information of the single pixels to a sequence of single features, that fully connected layers then can learn to connect. In order to extract the relevant features, it uses different \emph{kernels}, which are moved through the images using a certain \emph{stride value}, and applied to the pixel values. The \emph{kernel} and \emph{stride} values can be used to reduce the information for the following layers directly. Alternatively after each convolution, a certain function can be applied, which reduces the processed features.
+A convolutional neural network (CNN) is a type of neural network that uses a convolutional layer to extract features from an input image. It is useful to reduce the information of the single pixels to a sequence of single features, that fully connected layers then can learn to connect. In order to extract the relevant features, it uses different \emph{kernels}, which are moved through the images using a certain \emph{stride value}, and applied to the pixel values. The \emph{kernel} and \emph{stride} values can be used to reduce the information for the following layers directly. Alternatively after each convolution, a certain function can be applied, which reduces the processed features. A common architecture consists of repeating convolution and pooling layers, and finally fully connected neuronal layers.
 
 {
 	\centering
@@ -68,45 +72,124 @@ A convolutional neural network (CNN) is a type of neural network that uses a con
 }
 
 
+CNNs have the advantage of being able to automatically identify relevant features in images. As such, they are used for computer vision, object detection as well as classification tasks.
+
+
 \subsection{Recurrent neural network}
 \subsection{Reinforcement learning}
+
+
+
+\chapter{Hypothesis}
+
+To train a machine learning model to vectorization of raster images, a substantial amount of data is needed. Ideal data would be pairs of raster and vector representations of the same image, which are difficult to obtain normally. Since the conversion of vector images to raster formats is far less difficult, it could be a valid approach to generate random vector images and them convert them into a raster format, to get those raster-vector pairs on which the model can be trained.
+
+
+This work examines this approach, in regard to the following questions:
+
+\begin{enumerate}[label=\Roman*]
+   \item Is it feasible to approach raster to vector graphics conversion with a neural network that is trained on randomly generated data?
+   \begin{enumerate}
+      \item Can those pairs of raster and vector representations be randomly generated?
+      \item Are there models that can learn to convert raster images to vector representations when trained on the generated data?
+   \end{enumerate}
+   \item What strategies or measures have to be taken to make this feasible?
+   \item What are the limitations and pitfalls of this approach?
+\end{enumerate}
 
 
 \chapter{Method}
 
 \section{Overview}
 
-The data 
+The training and evaluation data for the model is generated 
 
-\section{Framework choice}
 \section{Language choice}
 
+\section{Framework choice}
+\section{Model architecture}
+
+The ability to automatically learn how to classify but also extract important features from images is what makes the CNN architecture suitable for this project.
 
 
 \section{Data generation}
 
-The data that the model uses for training consists of raster images , with one shape in each of them. The images are internally represented as numpy arrays, where each entry represents the color values of a pixel. The background is white (i. e. RGB values set to (1, 1, 1)), and the pixels that fall within the shape are set to (0, 0, 0), thus appearing black, so that the contrast between shape and background is maximized.
+The data that the model uses for training consists of raster images, with one shape in each of them. The images are internally represented as numpy arrays, where each entry represents the color values of a pixel. The background is white (i. e. RGB values set to (1, 1, 1)), and the pixels that fall within the shape are set to (0, 0, 0), thus appearing black, so that the contrast between shape and background is maximized.
 
-All data generation is implemented in \lstinline{rtov/data/} and its subdirectories. A class, \lstinline{LazyDataset}, which inherits from the \lstinline{torch.utils.data.Dataset}, provides an interface, which a \lstinline{torch.utils.data.Dataloader} object can use later to get the next image. Therefore, the method \lstinline{__getitem__(self, i: int)} is provided, which loads a numpy array, draws a random shape on it and transforms it into a vector. Interesting is that the 
+All data generation is implemented in \lstinline{rtov/data/} and its subdirectories. A class, \lstinline{LazyDataset}, which inherits from the \lstinline{torch.utils.data.Dataset}, provides an interface, which a \lstinline{torch.utils.data.Dataloader} object can use later to get the next image. Therefore, the method \lstinline{__getitem__(self, i: int)} is provided, which loads a numpy array, draws a random shape on it and transforms it into a vector.
 
 \section{Model architecture}
 
-[TODO]
+The model in the demonstration is a 
 
 \section{Optimizing mechanisms}
 
-[TODO]
+\subsection{Memory management pitfall}
+
+Interesting is that the memory that holds the numpy array which represents the pixel values could be reused, which would have the to have the result that garbage collection is less often invoked. Since garbage collection can be a performance bottleneck      % TODO: Citation needed
+, this can in some situation lead to significant performance improvements.      % TODO: Citation needed
+
+Such a reusing of memory was tried to be achieved by using following code: \lstinline{self.image[:] = np.full(shape, ..)}. Manual memory management is usually not possible in Python, since it does not officially support it. Objects like arrays are usually passed by pointer, and by reassigning to a variable, this pointer is overwritten, leaving the old value in memory until the next garbage collection is invoked. Then the garbage collector frees the memory after finding out that no references to it exist anymore.      % TODO: Citation needed
+
+In the case of numpy arrays though, \lstinline{[:]} can be used to explicitly dereference the numpy array.
+
+\begin{lstlisting}
+   import numpy as np
+   a = np.array([[1, 2, 3], [4, 5, 6]])
+   b = a       # Makes a copy of the pointer, not the object
+   c = a
+
+   c = 0       # `c` is changed
+   print(a)    # `a` is still the same -> new object was created
+
+   b[:] = 0    # Change `b`
+   print(a)    # `a` has changed as well -> the same memory was overwritten
+\end{lstlisting}
+
+So \lstinline{a[:] = x} in Python, where \lstinline{a} is a numpy array is the equivalent to do \lstinline{*b = x;} in C in terms of memory access.
 
 
+
+
+\chapter{Results}
+% TODO
 
 
 \chapter{Discussion}
 
 \section{Opportunities of generated training data for vectorization}
 
-\section{Limits}
+The demonstration has shown that a deep learning model can be trained on raster-vector representation pairs that are generated randomly, and the results that it produces resemble the original image. In that regard the demonstration has confirmed the initial hypothesis.
+
+It has to be considered though that the data that is used for the training is very limited and not yet on a point where it could be used in real world applications. It consists of a small number of shapes, and the model extracts only data concerning position and size of the shapes. It lacks the ability to determine the color of a shape, and cannot be used to convert images containing more than one shape and therefore the ability to recognize relations between the shapes in an image. The model outputs a numerical representation of the image, which first would have to be converted into the actual format. This should not be a problem though, since 
+Those are limitations of demonstration and not necessarily of the approach itself. The model used in the demonstration cannot answer the question of whether those obstacles can be overcome or not.
+
+Those observations could be made though:
+
+\begin{enumerate}[label=\Roman*]
+   \item Even a model trained on a CPU can quickly learn to extract shapes from raster images using the generated data
+   \item To scale and improve the model, many optimizations could still be taken in the sections model architecture, training data and training parameter optimization
+   \item No obstacles have been observed when changing the models training data. There is no apparent reason why it should not be possible to make a model learn more complex data.
+   \item A more complex model may be needed for further experiments
+\end{enumerate}
+
+
+\section{Limitations}
 
 \section{Proposed model architectures}
+
+To be able to convert raster images to vector images using deep learning, there are many different strategies and architectures. In regard to the experience that was accumulated in the progress of this work, the following architecture is proposed for projects going further than this thesis does. It is a broad structure that includes elements of many different deep learning strategies such as Reinforcement learning, Recurrent convolutional networks using features from residual neural networks.
+
+\begin{enumerate}
+   \item 
+\end{enumerate}
+
+\section{Future work}
+
+\section{Conclusion}
+
+
+\chapter{Sources and references}
 
 
 
