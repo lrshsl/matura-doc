@@ -1,6 +1,13 @@
 
+# Latex build files
 **.aux
 **.fdb_latexmk
 **.fls
 **.log
 **.synctex.gz
+**.bbl
+**.blg
+**.run.xml
+**.toc
+
+matura_thesis/thesis-blx.bib
