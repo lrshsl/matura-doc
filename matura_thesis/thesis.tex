@@ -1,24 +1,57 @@
+
+%----------------------------------------------%
+% {{{
+%----------------------------------------------%
+
 \documentclass[12pt, a4paper, titlepage]{report}
+
+
+%----------------------------------------------%
+% Packages
+%----------------------------------------------%
+
 
 \usepackage{graphicx}   % Images
 \usepackage{enumitem}   % Pretty lists
 \usepackage{listings}   % Code listings
+\usepackage{hyperref}   % Links
 
-\usepackage[backend=bibtex]{biblatex}   % Bibliography
+\usepackage[backend=biber]{biblatex}   % Bibliography
+\bibliography{../rc/sources/AITools}   % Remember: no .bib
+\bibliography{../rc/sources/manual}
 \bibliography{../rc/sources/Maturawork2023}
 
+%----------------------------------------------%
+% Metadata
+%----------------------------------------------%
 
-\title{Maturaarbeit}
+\title{RtoV - Deep Learning with Generated Data for Raster Vectorization}
 \author{Lars Hoesli}
 \date{December 2023}
 
-% Make title, author and date referencable
+
+%----------------------------------------------%
+% Macros, commands and definitions
+%----------------------------------------------%
+
+% Make title, author and date referable
 \makeatletter\let\inserttitle\@title\makeatother
 \makeatletter\let\insertauthor\@author\makeatother
 \makeatletter\let\insertdate\@date\makeatother
 
 
+%----------------------------------------------%
+% }}}
+%----------------------------------------------%
+
+
+
 \begin{document}
+
+
+%----------------------------------------------%
+% Title page {{{
+%----------------------------------------------%
 
 \begin{titlepage}
     \centering
@@ -26,8 +59,8 @@
 	 % Title
     \Huge{\textbf{\inserttitle}}
     \par
-    \LARGE{\insertauthor}
-
+    \Large{Matura Work by \insertauthor}
+    \vspace{1cm}\par
     \large{\insertdate}
     \vspace{2cm}
 
@@ -38,11 +71,36 @@
 		 This paper examines a particular approach for converting raster images containing clearly visible shapes into a vector representation.
 		 It is demonstrated how a neural network can learn to extract the necessary data through training with on-the-fly generated data.
     \end{abstract}
+
+    % Abstract
+    \begin{abstract}
+       The conversion from raster images to vector representations remains a challenging task to this day and is actively researched. Due to the inherent difficulties that algorithmic approaches face, such as finding shapes in noisy or blurred images with varying lighting conditions, much research is done using machine learning, where the most apparent problem is the acquisition of appropriate training data. Therefore, it can be beneficial if pairs of raster images and their corresponding vector representations could be automatically generated.
+		 This paper examines this particular approach: Training a machine learning model on generated data pairs. A demonstration is done in a limited scope, where a deep learning model is trained on data that is generated on-the-fly in order to perform the conversion into vector representation from raster images containing clearly visible shapes. The model used is a simple multi-task learning model with a Convolutional Neural Network as a frontend. It predicts the shape and then uses separate fully connected layers for each shape 
+
+       The code for the demonstration can be found online under \href{https://github.com/lrshsl/RtoV}{github.com/lrshsl/RtoV}
+    \end{abstract}
+
 \end{titlepage}
 
+%----------------------------------------------%
+% }}}
+%----------------------------------------------%
+
+%----------------------------------------------%
+% Table of contents {{{
+%----------------------------------------------%
 
 \tableofcontents
 
+%----------------------------------------------%
+% }}}
+%----------------------------------------------%
+
+
+
+%----------------------------------------------%
+% Introduction {{{
+%----------------------------------------------%
 
 \chapter{Introduction}
 
@@ -51,7 +109,7 @@ Many different formats and compression have emerged, the most influential of whi
 
 \section{Vector and Raster Graphics}
 
-Vector and raster graphics are two fundamentally different approaches on how to represent the content of an image. Both have advantages in representing a certain kind of image, and are less appropriate in other situations. While raster images store the color values of small parts of a given picture - often called pixels - to approximate what the image looks like, vector formats rather store a specification for what shapes can be seen, similar to how humans describe images.
+Vector and raster graphics are two fundamentally different approaches on how to represent the content of an image. Both have advantages in representing a certain kind of image, and are less appropriate in other situations. While raster images store the color values of small parts of a given picture - often called pixels - to approximate what the image looks like, vector formats rather store a specification for what shapes can be seen, similar to how humans receive images.
 
 Both methods have pros and cons, and are more appropriate for certain situations than others. But vector formats have many advantages for storing images that are easily describable in shapes, especially shapes made up of one-colored areas or easily describable gradients. In such cases, vector graphics can represent those shapes more precise, with infinite resolution, while being less storage intensive at the same time. Raster formats in turn are better suited for images without easily distinguishable shapes, such as portraits or landcape images.
 
@@ -65,6 +123,7 @@ Therefore a way to convert raster images into a vector format is beneficial, and
 
 \section{}
 \subsection{Activation Functions}
+\subsection{Loss Functions}
 
 \section{Architectures of Neural Networks}
 
@@ -72,21 +131,52 @@ Deep neural networks can be structured in different ways, leading to different k
 
 \subsection{Convolutional Neural Networks}
 
-A convolutional neural network (CNN) is a type of neural network that uses a convolutional layer to extract features from an input image. It is useful to reduce the information of the single pixels to a sequence of single features, that fully connected layers then can learn to connect. In order to extract the relevant features, it uses different \emph{kernels}, which are moved through the images using a certain \emph{stride} value, and applied to the pixel values. The \emph{kernel} and \emph{stride} values can be used to reduce the information for the following layers directly. Alternatively after each convolution, a certain function can be applied, which reduces the processed features. A common architecture consists of repeating convolution and pooling layers, and finally fully connected neuronal layers as it is seen in \ref{fig:cnn_architecture}.
+A Convolutional Neural Network (CNN) is a type of neural network that uses a convolutional layer to extract features from an input image. It is useful to reduce the information of the single pixels to a sequence of single features, that fully connected layers then can learn to connect. In order to extract the relevant features, it uses different \emph{kernels}, which are moved through the images using a certain \emph{stride} value, and applied to the pixel values. The \emph{kernel} and \emph{stride} values can be used to reduce the information for the following layers directly. Alternatively after each convolution, a certain function can be applied, which reduces the features that need to be processed. A common architecture consists of repeating convolution and pooling layers, and finally fully connected neuronal layers that can process the information logically as it is seen in \ref{fig:cnn_architecture}.
 
-{
+\begin{figure}
 	\centering
 	\includegraphics[width=1.0\textwidth]{../rc/images/cnn_architecture.png}
+   \caption{Typical Convolutional Neural Network architecture \cite{img_cnn_architecture}}
 	\label{fig:cnn_architecture}
-}
+\end{figure}
 
 
-CNNs have the advantage of being able to automatically identify relevant features in images. As such, they are used for computer vision, object detection as well as classification tasks. In the demonstration for this work, the CNN architecture is used to classify the image and extract the relevant features.
+Convolutional Neural Networks have the advantage of being able to automatically identify relevant features in images. As such, they are used for computer vision, object detection as well as classification tasks. In the demonstration for this work, the CNN architecture is used to classify the image and extract the relevant features.
 
 
 \subsection{Recurrent Neural Networks}
+
+Recurrent Neural Networks (RNNs) well suited to handle sequential data by remembering information about previous inputs. This kind of memory mechanism is achieved by having loops within the neural network, allowing Recurrent Neural Networks to retain information and consider past in- and outputs when processing current ones. This makes them ideal for tasks like time series prediction, natural language processing, speech recognition, and more.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{../rc/images/rnn_architecture.pdf}
+   \caption{Example Recurrent Neural Network architecture \cite{img_rnn_architecture}}
+	\label{fig:rnn_architecture}
+\end{figure}
+
+However, traditional RNNs can face issues like the vanishing or exploding gradient problem, hindering their ability to learn long-range dependencies effectively.
+To address those issues, improvements like Long Short-Term Memory (LSTM) and Gated Recurrent Unit (GRU) have been developed. These architectures use gating mechanisms that control the flow of information, enabling better long-term memory and gradient flow.
+
+RNNs and their enhanced versions like LSTM and GRU have proven valuable in various applications that involve sequential data, allowing machines to comprehend and generate sequences more effectively than standard feedforward networks. In the case of raster vectorization this architecture could allow a neural network to remember which shape has previously been processed.
+
 \subsection{Reinforcement Learning}
 
+In Reinforcement Learning (RL), a neural network (agent) learns to make decisions by interacting with a given environment. The agent takes actions in the environment, and based on those actions, it receives feedback in the form of rewards or punishments. The goal of the agent is to learn how to maximize the reward.
+
+The suggested use of RL for vectorization in this paper is inspired by the work "Marvel - Raster Manga Vectorization via Primitive-wise Deep Reinforcement Learning"  (\cite{su_marvel_2023}).
+
+The agent learns by trial and error, exploring different actions and observing the consequences in terms of rewards. The goal is to discover an optimal policy that leads to the maximum cumulative reward over time. Reinforcement learning has been successfully applied to various domains, including game playing (e.g., AlphaGo), robotics, finance, and more. They have already proven valuable in raster to vector conversion \cite{su_marvel_2023}.
+
+\begin{description}
+   \item[Environment]: In the case of the raster to vector conversion, the environment is the raster image that is being converted.
+
+   \item[State]: The state is a copy of the original image, which is modified by the agent each time a new shape is predicted.
+
+   \item[Action]: The delection of the shape that was predicted follows as a action, that modifies the state.
+
+   \item[Reward]: The reward is calculated by comparing the original image with the state. To do this comparison, both images would have to be converted into a raster presentation, so that the pixel values can be compared.
+\end{description}
 
 \section{Existing Approaches}
 
@@ -118,8 +208,14 @@ Raster to vector conversion is a well researched field, and there are many diffe
 
 These approaches represent a spectrum of techniques, each with its strengths and limitations. Hybrid models that combine algorithmic and deep learning components have also emerged, aiming to leverage the benefits of both paradigms. As one of those, MarVel
 
+%----------------------------------------------%
+% }}}
+%----------------------------------------------%
 
 
+%----------------------------------------------%
+% Goal and Hypothesis {{{
+%----------------------------------------------%
 
 \chapter{Goal and Hypothesis}
 
@@ -130,66 +226,156 @@ This work examines this approach in regard to the following questions:
 
 \begin{enumerate}[label=\Roman*]
    \item Is it feasible to approach raster to vector graphics conversion with a neural network that is trained on randomly generated data?
-   \begin{enumerate}
-      \item Can those pairs of raster and vector representations be randomly generated?
-      \item Are there models that can learn to convert raster images to vector representations when trained on the generated data?
-   \end{enumerate}
-   \item What strategies or measures have to be taken to make this feasible?
-   \item What are the limitations and pitfalls of this approach?
+   \item What strategies or measures have to be taken in order to make this feasible?
+   \item What performance can be achieved, and what are the limitations and pitfalls of this approach?
 \end{enumerate}
 
+
+Furthermore, very specific questions are being asked:
+
+\begin{enumerate}[label=\Roman*]
+   \item How should the data be generated? In large chunks and stored on disk? Batches that are stored in memory?
+   \item How should the model be trained?
+\end{enumerate}
+
+%----------------------------------------------%
+% }}}
+%----------------------------------------------%
+
+
+%----------------------------------------------%
+% Method {{{
+%----------------------------------------------%
 
 \chapter{Method}
 
 \section{Overview}
 
-The training and evaluation data for the model is generated 
+The training and evaluation data for the model consists of 100x100 pixel images with 3 color channels, with exactly one shape on each image. The shape is being written on all color channels that are within the shape, and thus appears black on a white canvas when plotted. Which shapes is generated, as well as what the size and position of the shapes are, are randomized and differ on each call.
 
-\section{Language Choice}
+The training occurs in several steps:
+\begin{enumerate}
+   \item Generation of the training data
+   \item Training of the model
+   \item Evaluation of the model
+\end{enumerate}
 
-Deep learning is a very resource intense task, and since the work was limited in time and resource usage, the language choice was taken in regards mainly to the expected development time and runtime performance of the language and their frameworks. And since the computational intensive parts are done within the deep learning library that is going to be used, the availability of performant and established machine learning libraries was a high priority. On this basis, the table \ref{table:language_evaluation} has been produced, which assigns points to each of the important factors. 
+
+\subsection{Shape Generator}
+
+A function has been written for each shape that returns a numpy array that describe the shape in as few bytes as possible. Since the number of datapoints differs from each shape, the array is padded with zeros to match the maximum number of datapoints. This padding is not being used for determining the performance of the model.
+
+Here is a breakdown of the different shapes and their data representation:
+\begin{itemize}
+   \item Line: A line is defined through two points, width and color: [x1, y1, x2, y2, width, <color>]. Zeros are added for padding. Width and color are not used by the model in the demonstration.
+   \item Circle: Center, radius and color: [x, y, r, <color>].
+   \item Rectangle: One corner, width, height and color: [x1, y1, w, h, <color>].
+   \item Triangle: Three corner points and color: [x1, y1, x2, y2, x3, y3, <color>].
+\end{itemize}
+
+When fully implemented, the color could take up 4 bytes, for red, green blue and alpha values. In the unmodified demonstration, the color is not being used, since the color that is being written on the image is always black.
+
+The function in the current configuration returns a one dimenstional numpy array with a length of 6, which is the the number of datapoints used for a triangle (without color).
+
+
+The corner points, width and height values that are generated are restricted in such a way, that the shape is always within the image. The possibility, that two different shapes can lead to the same pixels being colored, is not being taken into account though. Is thus is possible, that e. g. a triangle with its corners forming a line looks the same to the model.
+
+
+The representation that is obtained after the previous step, then is written to a numpy array with the shape \lstinline{(100, 100, 3)} or in graphical terms a white canvas. For the conversion from this specific representation to a raster image, a function has been developed (the \lstinline{draw_on_image} function in \lstinline{data/draw_shape_on_image.py}) that performs this conversion with the help of the OpenCV2 library.
+
+\subsection{Training}
+\subsection{Evaluation}
+
+For the evaluation of the model, its output, which is a numpy array containing the shape prediction and one which contains a specification in the same representation as the ground truth, is being compared to the original shape. This is done using the following loss functions: Sparse Categorical Crossentropy for the shape prediction and Mean Squared Error for the prediction of the other datapoints.
+
+
+\section{Language Choice}  % {{{
+
+Deep learning is a very resource intense task, and since the work was limited in time and resource usage, the language choice was taken in regards mainly to the expected development time and runtime performance of the language and their frameworks. And since the computational intensive parts are done within the deep learning library that is going to be used, the availability of performant and established machine learning libraries was a high priority. On this basis, the table \ref{table:language_evaluation} has been produced, which assigns points to each of the relevant factors. Furthermore a in-depth analysis of the different parts have been conducted, which explains how the points were chosen.
 
 \begin{table}
    \begin{tabular} {|c||p{2.2cm}|p{2.2cm}|p{2.5cm}|p{2.2cm}|p{2.2cm}|}
       \hline
-      Language    & Performance & DL libraries & Names & Other libraries* & Other remarks \\
+      Language    & Performance & DL libraries & Other ecosystem* & & Other remarks \\
       \hline\hline
-      Python      & 1 & 4 & 5 & Pytorch, TF & Gradually optimizable** \\ \hline
-      Javascript  & 1 & 4 & 4 & BrainJS, Ml5 & Runs in the web \\ \hline
-      C++         & 5 & 2 &   & TF &\\ \hline
-      Rust        & 5 & 3 &   & Burn, Tangram &\\ \hline
-      C           & 5 & 1 &   & Darknet &\\ \hline
-      Go          & 5 & 2 &   & Gorgonia &\\
+      Python      & 1 & 4 & 5 & Pytorch, TF & \\ \hline
+      Javascript  & 2 & 4 & 4 & BrainJS, Ml5 & \\ \hline
+      C++         & 5 & 2 & 3 & TF &\\ \hline
+      C           & 5 & 1 & 2 & Darknet, Libtorch &\\ \hline
+      Rust        & 5 & 3 & 4 & Burn, Tangram &\\ \hline
+      Go          & 5 & 2 & 4 & Gorgonia &\\
+      \hline
+      Relevance   & 1 & 5 & 3 &   &   \\
       \hline
    \end{tabular}
    \caption{Language evaluation table}
    \label{table:language_evaluation}
 \end{table}
 
-\subsection*{Python}
+*Other ecosystem is rating the availability of libraries that are important for the given task. Namely, libraries for working with raster and vector images and plotting libraries for inspecting the progress of the neural network.
+
+{
+   \center
+   \subsection*{Python}
+}
 \begin{description}
-   \item[Ecosystem] Many well established and highly optimized libraries such as TF, Keras, Pytorch.
-   \item[Performance] Slow, but libraries are written mostly in C and heavily optimized. Performance critical parts can gradually be optimized by switching to Cyphon, a compiler which can take advantage of type information and call back and forth into Python and C.
+   \item[Ecosystem] Many well established and highly optimized machine learning libraries such as Tensorflow, Keras, Pytorch have been developed for Python. Because of its active community and many libraries, such as \href{}{matplotlib}, \href{}{Pandas} or \href{}{Pillow}, it has the reputation of being the best fit for deep learning and data science.
+   \item[Performance] The language performs poorly on benchmark tests \cite{goodmanwen_programming-language-benchmarks-visualization_2023}, but Python libraries are written mostly in C and heavily optimized, and thus the performance critical parts are usually fast enough. Performance bottlenecks can also be gradually optimized by switching to Cyphon or directly to C, which are compiled and can take advantage of type information and are therefore much faster.
 \end{description}
 
-\subsection*{Javascript}
+{
+   \center
+   \subsection*{Javascript}
+}
 \begin{description}
    \item[Ecosystem] Many high-level machine learning libraries such as Brain.js, Ml5.js but few allow the fine-grained control needed for deep learning research.
+   \item The language itself usually performs better than Python, but due to its dynamically typed nature, still is remarkably slower than most statically typed languages.
+   \item[Other remarks] The language would run easily in the web.
 \end{description}
 
-
-\subsection*{C++} High runtime performance, but low development speed. Attention in needed to keep it memory safe.
+{
+   \center
+   \subsection*{C++} High runtime performance, but low development speed. Attention in needed to keep it memory safe.
+}
 \begin{description}
    \item[Rust] High runtime performance and memory safe by default. Relies heavily on high level constructs which speeds up development 
-   \item[C] Lack of high level features can slow down development speed. Not memory safe.
+   \item[C] 
    \item[Go] Fast iterations. Deep learning ecosystem not yet mature.
 \end{description}
 
+{
+   \center
+   \subsection*{C}
+}
+\begin{description}
+   \item[Ecosystem] Despite the fact, that many deep learning frameworks are written in C, they are often developed to be operated from more high level languages.
+   \item[Performance] The language itself belongs to the best performant languages. But the lack of high level features can slow down development speed. It is also not memory safe, which can lead to bugs and vulnerabilities.
+\end{description}
+
+{
+   \center
+   \subsection*{Rust}
+}
+\begin{description}
+   \item[Ecosystem] Rust is a promising, but fairly new language, and so is its deep learning ecosystem. Comprehensive, performant deep learning frameworks such as \href{https://github.com/Tracel-AI/burn}{Burn} do exist, but have not been used all that much, and have not yet been able to build up a large ecosystem around it.
+   \item[Performance] Rust is very performant while still offering high level features through zero-cost abstractions and memory safety through compile-time checks.
+\end{description}
+
+{
+   \center
+   \subsection*{Go}
+}
+\begin{description}
+   \item[Ecosystem] Go is a promising language, but its ecosystem is in a similar state as the one of Rust. Libraries like \href{https://github.com/Tracel-AI/gorgonia}{Gorgonia} may be as powerful as Keras soon, but have not yet been used often and have not such an active and large community behind it as Tensorflow or Pytorch.
+   \item[Performance] Go is faster than both Python and Javascript, and allows to easily add concurrency, which can increase the performance even more.
+\end{description}
+
+% }}}
+
 
 \section{Framework Choice}
-\section{Model Architecture}
 
-The ability to automatically learn how to classify but also extract important features from images is what makes the CNN architecture suitable for this project. Consequentally, the model used in the demonstration sends the input image through two stacks of convolution layers with ReLU activation and Max Pooling layers.
+\section{Model Architecture}
 
 
 \section{Data Generation}
@@ -200,16 +386,16 @@ All data generation is implemented in \lstinline{rtov/data/} and its subdirector
 
 \section{Model Architecture}
 
-The model in the demonstration is a convolutional neural network. It does
+The model in the demonstration is a Convolutional Neural Network with several backends. A backend is a collection of fully connected layers, which can be trained on the output of the frontend (i. e. the convolutional and pooling layers). At first, the input image is feeded through the convolutional frontend: Two stacks with each a convolution layer with ReLU activation followed by a Max Pooling layer. Subsequently, the result is passed through one of the backend that is responsible for the classification of the shape. Depending on the shape that has been predicted in the previous step, the same output of the convolutional layers is passed through another stack of fully connected layers which are responsible for the respective shape. Through this mecanism, a conditional form of multi-task learning is achieved.
 
 \section{Optimizing Mechanisms}
 
 \subsection{Memory Management Pitfall}
 
-Interesting is that the memory that holds the numpy array which represents the pixel values could be reused, which would have the to have the result that garbage collection is less often invoked. Since garbage collection can be a performance bottleneck      % TODO: Citation needed
-, this can in some situation lead to significant performance improvements.      % TODO: Citation needed
+Interesting is that the memory that holds the numpy array which represents the pixel values could be reused, which could result in garbage collection being less often invoked. Since garbage collection often has to freeze the execution of the program, it can become a performance bottleneck if it is often invoked.      % TODO: Citation needed
+Decreasing the memory usage of a program thus can lead to significant performance improvements in some situations.
 
-Such a reusing of memory was tried to be achieved by using following code: \lstinline{self.image[:] = np.full(shape, ..)}. Manual memory management is usually not possible in Python, since it does not officially support it. Objects like arrays are usually passed by pointer, and by reassigning to a variable, this pointer is overwritten, leaving the old value in memory until the next garbage collection is invoked. Then the garbage collector frees the memory after finding out that no references to it exist anymore.      % TODO: Citation needed
+Such a reusing of memory was tried to be achieved by using following code: \lstinline{self.image[:] = np.full(shape, ..)}. Manual memory management is usually not possible in Python, since the language does not officially support it. Objects like arrays are usually passed by references, and by reassigning to a variable, this pointer is overwritten, leaving the old value in memory until the next garbage collection cycle is invoked. At that point the garbage collector frees the memory after finding out that no references to it exist anymore.      % TODO: Citation needed
 
 In the case of numpy arrays though, \lstinline{[:]} can be used to explicitly dereference the numpy array.
 
@@ -228,18 +414,35 @@ In the case of numpy arrays though, \lstinline{[:]} can be used to explicitly de
 
 So \lstinline{a[:] = x} in Python, where \lstinline{a} is a numpy array is the equivalent to do \lstinline{*b = x;} in C in terms of memory access.
 
+Interesting is, that after implementing this improvement, no significant performance improvement was being observed. Consequently, a micro benchmark has been written to be able to examine the effect of the change. The results are rather surprising: In a situation comparable to the one in the usage in the demonstration, overwriting the memory does introduce more overhead and is slower in that specific case than simply produce a new array. This behaviour might have to do with optimizing mechanisms of numpy and the possibility that the new array still is created by the \lstinline{np.full} function, which subsequently had to be copied into the old memory spot.
+
+%----------------------------------------------%
+% }}}
+%----------------------------------------------%
 
 
+%----------------------------------------------%
+% Results {{{
+%----------------------------------------------%
 
 \chapter{Results}
-% TODO
 
+\section{Performance}
+
+%----------------------------------------------%
+% }}}
+%----------------------------------------------%
+
+
+%----------------------------------------------%
+% Discussion {{{
+%----------------------------------------------%
 
 \chapter{Discussion}
 
 \section{Opportunities of Generated Training Data for Vectorization}
 
-The demonstration has shown that a deep learning model can be trained on raster-vector representation pairs that are generated randomly, and the results that it produces resemble the original image. In that regard the demonstration has confirmed the initial hypothesis.
+The demonstration has shown that a deep learning model that is trained on randomly generated raster-vector representation pairs can produce results that resemble the original image. In that regard the demonstration has confirmed the initial hypothesis.
 
 It has to be considered though that the data that is used for the training is very limited and not yet on a point where it could be used in real world applications. It consists of a small number of shapes, and the model extracts only data concerning position and size of the shapes. It lacks the ability to determine the color of a shape, and cannot be used to convert images containing more than one shape and therefore the ability to recognize relations between the shapes in an image. The model outputs a numerical representation of the image, which first would have to be converted into the actual format. This should not be a problem though, since 
 Those are limitations of demonstration and not necessarily of the approach itself. The model used in the demonstration cannot answer the question of whether those obstacles can be overcome or not.
@@ -275,11 +478,34 @@ To be able to convert raster images to vector images using deep learning, there 
 
 \section{Conclusion}
 
+%----------------------------------------------%
+% }}}
+%----------------------------------------------%
+
+
+%----------------------------------------------%
+% Bibliography {{{
+%----------------------------------------------%
 
 \chapter{Sources and References}
 
-\printbibliography
+\nocite{*}
 
+\begin{refcontext}[labelprefix=T]
+   \printbibliography[type=misc, keyword={TextResource}, title={Text Sources and References}]
+\end{refcontext}
+
+\begin{refcontext}[labelprefix=I]
+  \printbibliography[type=misc, keyword={ImageResource}, title={Image Resources}]
+\end{refcontext}
+
+\begin{refcontext}[labelprefix=A]
+   \printbibliography[type=misc, keyword={AITool}, title={AI Tools}]
+\end{refcontext}
+
+%----------------------------------------------%
+% }}}
+%----------------------------------------------%
 
 
 \end{document}
