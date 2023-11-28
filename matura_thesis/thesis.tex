@@ -67,16 +67,13 @@
     % Title picture
     \includegraphics[width=1.0\textwidth]{../rc/images/all_shapes_approx_visual1.png}
     \vfill
-    \begin{abstract}
-		 This paper examines a particular approach for converting raster images containing clearly visible shapes into a vector representation.
-		 It is demonstrated how a neural network can learn to extract the necessary data through training with on-the-fly generated data.
-    \end{abstract}
-
     % Abstract
     \begin{abstract}
        The conversion from raster images to vector representations remains a challenging task to this day and is actively researched. Due to the inherent difficulties that algorithmic approaches face, such as finding shapes in noisy or blurred images with varying lighting conditions, much research is done using machine learning, where the most apparent problem is the acquisition of appropriate training data. Therefore, it can be beneficial if pairs of raster images and their corresponding vector representations could be automatically generated.
-		 This paper examines this particular approach: Training a machine learning model on generated data pairs. A demonstration is done in a limited scope, where a deep learning model is trained on data that is generated on-the-fly in order to perform the conversion into vector representation from raster images containing clearly visible shapes. The model used is a simple multi-task learning model with a Convolutional Neural Network as a frontend. It predicts the shape and then uses separate fully connected layers for each shape 
 
+		 This paper examines this particular approach: Training a machine learning model on generated data pairs. A demonstration is done in a limited scope, where a deep learning model is trained on data that is generated on-the-fly in order to perform the conversion into a vector representation from raster images containing clearly visible shapes. The model used in the demonstration is a simple multi-task learning model with a Convolutional Neural Network as a frontend.
+
+       \vspace{1cm}
        The code for the demonstration can be found online under \href{https://github.com/lrshsl/RtoV}{github.com/lrshsl/RtoV}
     \end{abstract}
 
@@ -447,7 +444,7 @@ The demonstration has shown that a deep learning model that is trained on random
 It has to be considered though that the data that is used for the training is very limited and not yet on a point where it could be used in real world applications. It consists of a small number of shapes, and the model extracts only data concerning position and size of the shapes. It lacks the ability to determine the color of a shape, and cannot be used to convert images containing more than one shape and therefore the ability to recognize relations between the shapes in an image. The model outputs a numerical representation of the image, which first would have to be converted into the actual format. This should not be a problem though, since 
 Those are limitations of demonstration and not necessarily of the approach itself. The model used in the demonstration cannot answer the question of whether those obstacles can be overcome or not.
 
-Those observations could be made though:
+Those observations could be made:
 
 \begin{enumerate}[label=\Roman*]
    \item Even a model trained on a CPU can quickly learn to extract shapes from raster images using the generated data
@@ -458,6 +455,8 @@ Those observations could be made though:
 
 
 \section{Limitations}
+
+The demonstration has been done in a limited scope and does not provide a basis for making general statements about the usage of generated data. That being said, no limiting factors habe been observed, and there are no apparent reasons for why a neural network with sufficient complexity and training should not be able to perform vectorization of simple raster images.
 
 \section{Proposed Model Architectures}
 
@@ -476,7 +475,13 @@ To be able to convert raster images to vector images using deep learning, there 
 
 \section{Future Work}
 
+The demonstration, even though quite limited, has shown that an approximation on raster images is possible.
+
 \section{Conclusion}
+
+The demonstration and research have shown that deep learning with generated vector-raster image pairs can be a useful technique for raster vectorization, at least in the first stage of training a neural network the basics.
+Furthermore, deep learning has shown it is in a stage today, where many different architectures and mechanisms equip neural networks with tools that are useful in the area of raster to vector conversion. A architecture has been proposed that might be able to leverage those advantages and produce an efficient way to vectorize raster images in practical applications.
+
 
 %----------------------------------------------%
 % }}}
