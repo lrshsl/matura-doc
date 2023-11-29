@@ -16,7 +16,11 @@
 \usepackage{listings}   % Code listings
 \usepackage{hyperref}   % Links
 
-\usepackage[backend=biber]{biblatex}   % Bibliography
+\usepackage[
+   style=numeric,
+   backend=biber,
+   defernumbers=true,
+]{biblatex}             % Bibliography
 \bibliography{../rc/sources/AITools}   % Remember: no .bib
 \bibliography{../rc/sources/manual}
 \bibliography{../rc/sources/Maturawork2023}
@@ -69,9 +73,9 @@
     \vfill
     % Abstract
     \begin{abstract}
-       The conversion from raster images to vector representations remains a challenging task to this day and is actively researched. Due to the inherent difficulties that algorithmic approaches face, such as finding shapes in noisy or blurred images with varying lighting conditions, much research is done using machine learning, where the most apparent problem is the acquisition of appropriate training data. Therefore, it can be beneficial if pairs of raster images and their corresponding vector representations could be automatically generated.
+       The conversion from raster images to vector representations remains a challenging task to this day, and is actively researched. Due to the inherent difficulties that algorithmic approaches face, such as finding shapes in noisy or blurred images with varying lighting conditions, more research is done using machine learning, where the most apparent problem is the acquisition of appropriate training data. Therefore, it can be beneficial if pairs of raster images and their corresponding vector representations can be automatically generated.
 
-		 This paper examines this particular approach: Training a machine learning model on generated data pairs. A demonstration is done in a limited scope, where a deep learning model is trained on data that is generated on-the-fly in order to perform the conversion into a vector representation from raster images containing clearly visible shapes. The model used in the demonstration is a simple multi-task learning model with a Convolutional Neural Network as a frontend.
+		 This paper examines this particular approach: Training a machine learning model on generated data pairs. A demonstration is done in a limited scope, where a deep learning model is trained on data that is generated on-the-fly in order to perform the conversion into vector representations from raster images containing clearly visible shapes. The model used in the demonstration is a simple multi-task learning model with a Convolutional Neural Network as a frontend.
 
        \vspace{1cm}
        The code for the demonstration can be found online under \href{https://github.com/lrshsl/RtoV}{github.com/lrshsl/RtoV}
@@ -101,19 +105,22 @@
 
 \chapter{Introduction}
 
-Images have become an important part of everyday live, most of which are stored digitally, which is making the search for effective storage of images an essential, well researched aspect of computer science.
-Many different formats and compression have emerged, the most influential of which can be categorized into two main categories - vector and raster formats.
+Images have become an important part of everyday life, most of which are stored digitally. This make the search for effective storage of images an essential, well-researched aspect of computer science.
+Many different formats and compression methods have emerged. The image formats used today can roughly be categorized into two main categories - vector and raster formats.
 
-\section{Vector and Raster Graphics}
+\section{Raster and vector graphics}
 
-Vector and raster graphics are two fundamentally different approaches on how to represent the content of an image. Both have advantages in representing a certain kind of image, and are less appropriate in other situations. While raster images store the color values of small parts of a given picture - often called pixels - to approximate what the image looks like, vector formats rather store a specification for what shapes can be seen, similar to how humans receive images.
+Raster and vector graphics are two fundamentally different approaches to representing the content of an image. Each has its advantages in representing certain types of images, but may be less appropriate in other situations. While raster images store the color values of small parts of a given picture - often called pixels - to approximate what the image looks like, vector formats store a specification for what shapes can be seen, similar to how humans receive images.
 
-Both methods have pros and cons, and are more appropriate for certain situations than others. But vector formats have many advantages for storing images that are easily describable in shapes, especially shapes made up of one-colored areas or easily describable gradients. In such cases, vector graphics can represent those shapes more precise, with infinite resolution, while being less storage intensive at the same time. Raster formats in turn are better suited for images without easily distinguishable shapes, such as portraits or landcape images.
+Both methods have pros and cons, and are more appropriate for certain situations than others. But vector formats have numerous advantages for storing images that are easily describable with shapes, especially those consisting of uniformly colored areas or easily describable gradients. In these cases, vector graphics can be a more precise and efficient representation of the image than raster formats. Vector formats can achieve an infinite resolution, since they do not work with grids of pixels, while being less storage intensive at the same time. Raster formats, in turn, are better suited for images without easily distinguishable shapes, such as portraits or landcape images.
 
-While format conversions among raster or vector formats and from vector to raster graphics can be done with a multitude of programs, the conversion from a raster image to a vector representation proves to bee more challenging, especially because the shapes and their features seen in the input image have to be recognized, which is not a easily solvable problem. Many factors can make it much more difficult, such as contrasts in different strengths, noise, and gradients that make it impossible to work with fixed thresholds to detect the contoures of shapes. With different manipulations, that one can apply to a given image, edge detection is made possible. That does not solve the problem though, since the composition of those edges still is difficult to do algorithmically.
-With deep learning those problems can somewhat be overcome, since the model itself can recognize the shapes, in a similar manner as humans do. Deep learning models have their own difficulties, of which accumulating training data is a big limitation.
+\subsection{Problem description}
 
-Therefore a way to convert raster images into a vector format is beneficial, and is not yet a solved problem. This is why I have chosen to do my matura thesis on the topic of raster to vector conversion.
+While format conversions among raster or vector formats and from vector to raster graphics can be done with a multitude of programs, the conversion from a raster image to a vector representation proves to bee more challenging. This is especially because the shapes and their features seen in the input image have to be recognized, which is not an easily solvable problem. Many factors can make it much more difficult, such as contrasts in different strengths, noise, and gradients that make it impossible to work with fixed thresholds to detect the contours of shapes. With different manipulations, that one can apply to a given image, edge detection is made possible. This does not solve the problem since the composition of those edges still is difficult to do algorithmically.
+With deep learning those problems can partially be addressed. The model itself can learn to recognize the shapes, in a similar manner as humans do. Deep learning models have their own difficulties. For supervised learning, accumulating sufficient training data is a significant challenge and often a limiting factor.
+
+Therefore a way to convert raster images into a vector format is beneficial and is not yet a solved problem. Deep learning is a powerful tool, especially if the data to train a neural network could be generated indefinitely.
+This is why this thesis has been done on the topic of raster-to-vector conversion with deep learning, and focuses on the usage of generated training data.
 
 
 \pagebreak
@@ -128,7 +135,9 @@ Deep neural networks can be structured in different ways, leading to different k
 
 \subsection{Convolutional Neural Networks}
 
-A Convolutional Neural Network (CNN) is a type of neural network that uses a convolutional layer to extract features from an input image. It is useful to reduce the information of the single pixels to a sequence of single features, that fully connected layers then can learn to connect. In order to extract the relevant features, it uses different \emph{kernels}, which are moved through the images using a certain \emph{stride} value, and applied to the pixel values. The \emph{kernel} and \emph{stride} values can be used to reduce the information for the following layers directly. Alternatively after each convolution, a certain function can be applied, which reduces the features that need to be processed. A common architecture consists of repeating convolution and pooling layers, and finally fully connected neuronal layers that can process the information logically as it is seen in \ref{fig:cnn_architecture}.
+A Convolutional Neural Network (CNN) is a type of neural network that uses a convolutional layer to extract features from an input image. 
+
+Reducing the information of individual pixels to a sequence of distinct features proves beneficial, as fully connected layers can subsequently learn to establish connections based on these features. In order to extract the relevant features, it uses different \emph{kernels}, which are moved through the images using a certain \emph{stride} value and are applied to the pixel values. The \emph{kernel} and \emph{stride} values can be used to reduce the information for the following layers directly. Alternatively, after each convolution, a certain function can be applied, which reduces the features that need to be processed. The usual architecture consists of repeating convolution and pooling layers, which extract the relevant features, and finally fully connected neuronal layers that can logically process the information. A graphical scheme is shown in \ref{fig:cnn_architecture}.
 
 \begin{figure}
 	\centering
@@ -148,7 +157,7 @@ Recurrent Neural Networks (RNNs) well suited to handle sequential data by rememb
 \begin{figure}
 	\centering
 	\includegraphics[width=1.0\textwidth]{../rc/images/rnn_architecture.pdf}
-   \caption{Example Recurrent Neural Network architecture \cite{img_rnn_architecture}}
+   % \caption{Example Recurrent Neural Network architecture \cite{img_rnn_architecture}}
 	\label{fig:rnn_architecture}
 \end{figure}
 
@@ -494,16 +503,19 @@ Furthermore, deep learning has shown it is in a stage today, where many differen
 
 \chapter{Sources and References}
 
-\nocite{*}
+\nocite{*}  % Show all bibliography entries
 
+% Text Resources
 \begin{refcontext}[labelprefix=T]
    \printbibliography[type=misc, keyword={TextResource}, title={Text Sources and References}]
 \end{refcontext}
 
+% Image Resources
 \begin{refcontext}[labelprefix=I]
   \printbibliography[type=misc, keyword={ImageResource}, title={Image Resources}]
 \end{refcontext}
 
+% AI Tools used
 \begin{refcontext}[labelprefix=A]
    \printbibliography[type=misc, keyword={AITool}, title={AI Tools}]
 \end{refcontext}
