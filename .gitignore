@@ -9,5 +9,7 @@
 **.blg
 **.run.xml
 **.toc
+**.out
+**.bcf
 
 matura_thesis/thesis-blx.bib
