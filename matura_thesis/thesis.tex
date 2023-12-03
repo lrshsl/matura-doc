@@ -38,6 +38,7 @@
 \bibliography{../rc/sources/manual}
 \bibliography{../rc/sources/Maturawork2023}
 
+
 %----------------------------------------------%
 % Metadata
 %----------------------------------------------%
@@ -55,6 +56,10 @@
 \makeatletter\let\inserttitle\@title\makeatother
 \makeatletter\let\insertauthor\@author\makeatother
 \makeatletter\let\insertdate\@date\makeatother
+
+% Make href use italics
+\let\oldhref\href
+\renewcommand{\href}[2]{\oldhref{#1}{\itshape#2}}
 
 
 %----------------------------------------------%
@@ -74,13 +79,13 @@
 
 	 % Title
     \Huge{\textbf{\inserttitle}}
-    \par\vspace{0.5cm}
-    \Large{Matura Work by \insertauthor}\\
-    \vspace{0.1cm}
+    \par\vspace{0.8cm}
+    \LARGE{Matura Work by \insertauthor}\\
+    \vspace{0.2cm}
     \large{Supervisor: Beat Temperli}\\
     \vspace{0.2cm}
     \large{\insertdate}
-    \vspace{1cm}
+    \vspace{1.5cm}
 
     % Title picture
     {
@@ -96,8 +101,10 @@
     % Abstract
     \begin{abstract}
        The conversion from raster images to vector representations remains a challenging task to this day and is actively researched. Due to the inherent difficulties that algorithmic approaches face, such as finding shapes in noisy or blurred images under varying lighting conditions, more research is being done using machine learning, where the most apparent problem is the acquisition of appropriate training data. Therefore, automatically generating pairs of raster images and their corresponding vector representations can be advantageous.
+       \vspace{0.3cm}
 
-		 This paper explores this particular approach: Training a machine learning model on generated data pairs. A demonstration is conducted in a limited scope, where a deep learning model is trained on on-the-fly generated data in order to perform the conversion from raster images containing clearly visible shapes into vector representations. The model used in the demonstration is a simple multi-task learning model with a convolutional neural network as a front end and various back ends responsible for classifying the shape or determining the features of a particular shape.
+		 This paper explores this particular approach: Training a machine learning model on generated data pairs. A demonstration is conducted in a limited scope, where a deep learning model is trained on on-the-fly generated data in order to perform the conversion from raster images containing clearly visible shapes into vector representations. The model used in the demonstration is a simple multi-task learning model with a convolutional neural network as a front end and various branches responsible for classifying the shape or determining the features of a particular shape.
+       \vspace{0.3cm}
 
        The model, although trained on a limited number of images, was able to determine the shape with high accuracy and learned to approximate the data relevant for specifying the shapes \emph{Line}, \emph{Rectangle} and \emph{Circle}. The vertices of the shape \emph{Triangle} have proven to be more challenging to estimate and the model presented in the demonstration was not able to provide an accurate representation for this shape.
 
@@ -351,6 +358,21 @@ The corner points, width and height values generated are constrained to ensure t
 The representation that is obtained after the previous step, then is written to a numpy array with the shape \lstinline{(100, 100, 3)} or in graphical terms a white canvas. To convert from this specific representation to a raster image, a function has been developed (the function \lstinline{draw_on_image} in \lstinline{data/draw_shape_on_image.py}) which accomplishes this task using the \emph{OpenCV2} library.
 
 \subsection{Training}
+
+The training process is structured in epochs, which consist of several batches each. The batch size and the number of epochs are parameterized and can be set by the user, either as flags that are passed to the program or, in the case of the number of epochs, interactively after each training.
+
+The training process on a batch can further be broken down into sub steps:
+
+\begin{enumerate}[label=\Roman*.]
+   \item The training images and their labels are generated as explained above and received from the data-loader in a batch
+   \item The model processes the images from the batch
+   \item The shape loss is computed using the appropriate loss functions
+   \item Neural network is being back-propagated with both losses
+   \item The losses are recorded for the statistics
+\end{enumerate}
+
+The optimizer automatically updates the model according to the back-propagation of the losses. The most important factor for the effectiveness the training is the learning rate, which is a scalar value that determines the impact of the losses on the weights of the model. In the demonstration, no automatic learning rate optimizer is used. However, it can be specified interactively. Through that procedure, the model is trained on all batches.
+
 \subsection{Evaluation}
 
 For the evaluation of the model, its output, which is a numpy array containing a batch of shape predictions and one which contains a batch of the shape specifications is being compared to the ground truth. The shape specifications are numpy arrays with data in the same representation as the one the raster image is generated from.
@@ -361,8 +383,8 @@ This is done using the following loss functions: \emph{Crossentropy loss} (CE) f
 
 Deep learning is a very resource intensive task. Due to time and resource constraints, the language choice was primarily based on the expected development time and runtime performance of the language and its frameworks. However, since the computational intensive parts are done within the deep learning library, the availability of performant and established machine learning libraries or frameworks was a high priority. On this basis, the table \ref{table:language_evaluation} has been produced, which assigns points to each of the relevant factors. Furthermore, an in-depth analysis of the different parts have been conducted, which provides insight of how the points were selected.
 
-\begin{table}
-   \begin{tabular} {|c||p{1.5cm}|p{2.0cm}|p{1.5cm}|p{2.5cm}||p{2.2cm}|}
+\begin{table}[h]
+   \begin{tabular} {|c||p{2.0cm}|p{2.5cm}|p{2.5cm}|p{3.0cm}||p{1.5cm}|}
       \hline
       \textbf{Language}    & \textbf{Perfor-mance} & \textbf{Machine learning libraries} & \textbf{Other ecosystem*} & \textbf{Represent-ative ML Libraries} & \textbf{Rating} \\
       \hline
@@ -376,13 +398,13 @@ Deep learning is a very resource intensive task. Due to time and resource constr
       \textbf{Relevance} & \textbf{1} & \textbf{5} & \textbf{3} & - & \\
       \hline
    \end{tabular}
-   \caption{Language evaluation table}
+   \caption{Language evaluation table\\}
+   *The point \emph{Other ecosystem} is rating the availability of libraries that are important for the given task. Namely, libraries for working with raster and vector images and plotting libraries for inspecting the progress of the neural network.
+
    \label{table:language_evaluation}
 \end{table}
 
 \vspace{0.5cm}
-*The point \emph{Other ecosystem} is rating the availability of libraries that are important for the given task. Namely, libraries for working with raster and vector images and plotting libraries for inspecting the progress of the neural network.
-
 {
    \center
    \subsection*{Python}
@@ -617,6 +639,30 @@ Furthermore, an architecture has been proposed that might be able to leverage th
 %----------------------------------------------%
 % }}}
 %----------------------------------------------%
+
+%----------------------------------------------%
+% Bibliography {{{
+%----------------------------------------------%
+
+\chapter{Appendix}
+
+\begin{description}
+   \item[Code] The code for the model can be found at the following link or when scanning the QR-Code below: \href{https://github.com/lrshsl/rtov.git}{github.com/lrshsl/RtoV}
+   \item[This Paper] This paper is available as a PDF and latex file at \href{https://github.com/lrshsl/matura-doc/tree/main/matura_thesis}{github.com/lrshsl/matura-doc}
+\end{description}
+
+
+\begin{figure}[b]
+   \centering
+   \includegraphics{../rc/images/QrCode_LinkRepo.png}
+   \caption{Link to the github repository with the code for the demonstration}
+\end{figure}
+
+
+%----------------------------------------------%
+% }}}
+%----------------------------------------------%
+
 
 %----------------------------------------------%
 % {{{
