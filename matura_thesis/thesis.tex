@@ -15,8 +15,9 @@
 %----------------------------------------------%
 
 
+\usepackage[utf8]{inputenc}  % Utf-8 input encoding
 \usepackage{graphicx}   % Images
-\usepackage{enumitem}   % Pretty lists
+\usepackage{enumitem}   % Pretty lists (With roman numerals!)
 \usepackage{listings}   % Code listings
 \usepackage{hyperref}   % Links
 
@@ -25,12 +26,14 @@
             labelfont={bf,it},
             textfont=it]{caption}
 
-% Pretty Enumerations
+% Bibliography
 \usepackage[
    style=numeric,
    backend=biber,
    defernumbers=true,
-]{biblatex}             % Bibliography
+]{biblatex}
+
+% Bibliography Sources
 \bibliography{../rc/sources/AITools}   % Remember: no .bib
 \bibliography{../rc/sources/manual}
 \bibliography{../rc/sources/Maturawork2023}
@@ -59,7 +62,6 @@
 %----------------------------------------------%
 
 
-
 \begin{document}
 
 
@@ -75,19 +77,19 @@
     \par\vspace{0.5cm}
     \Large{Matura Work by \insertauthor}\\
     \vspace{0.1cm}
-    \large{Mentored by Beat Temperli}\\
+    \large{Supervisor: Beat Temperli}\\
     \vspace{0.2cm}
     \large{\insertdate}
     \vspace{1cm}
 
     % Title picture
     {
-       \includegraphics[width=1.2\textwidth]{../rc/images/all_shapes_approx_visual4_1.png}
-       \label{fig:results_demonstration1}
+       \includegraphics[width=1.0\textwidth]{../rc/images/all_shapes_approx_visual0_condensed.png}
+       \label{fig:results_demonstration4_condensed}
     }
-    \begin{figure}[h]
+    \begin{figure}[h] % Separate because of the formatting
        \centering
-       \caption{\cite{results_demonstration1}. An example output of the model used in the demonstration. Two images form a pair, the first being the input image and the second the model output, converted into a raster representation.}
+       \caption{An example output of the model used in the demonstration. Two images form a pair, the first being the input image and the second the model output, converted into a raster representation (source \cite{results_demonstration0_condensed})}
     \end{figure}
 
     \vfill
@@ -140,7 +142,7 @@ Since the generation of raster images has become popular and the programs perfor
 
 \subsection{Problem Description}
 
-While format conversions among raster or vector formats and from vector to raster graphics can be done with a multitude of programs, the conversion from a raster image to a vector representation proves to bee more challenging. This is especially because the shapes and their features seen in the input image have to be recognized, which is not an easily solvable problem. Many factors can make it more difficult, such as contrasts in different strengths, noise, and gradients that make it impossible to work with fixed thresholds to detect the contours of shapes. With different manipulations and strategies, such as Hough Transform, Skeletonization or various Edge Detection Techniques, it is possible to vectorize raster images algorithmically. Today, these approaches are still very limited.
+While format conversions among raster or vector formats and from vector to raster graphics can be done with a multitude of programs, the conversion from a raster image to a vector representation proves to bee more challenging. This is especially because the shapes and their features seen in the input image have to be recognized, which is not an easily solvable problem. Many factors can make it more difficult, such as contrasts in different strengths, noise, and gradients that make it impossible to work with fixed thresholds to detect the contours of shapes. With different manipulations and strategies, such as \emph{hough transform}, \emph{skeletonization} or various edge detection techniques, it is possible to vectorize raster images algorithmically. However, by the time of writing, these approaches are still very limited.
 
 With deep learning those problems can partially be addressed. The model itself can learn to recognize the shapes, in a similar manner as humans do. Deep learning models have their own difficulties. For supervised learning, accumulating sufficient training data is a significant challenge and often a limiting factor.
 
@@ -164,15 +166,16 @@ ReLU, short for Rectified Linear Unit, is a simple yet efficient activation func
 As graphically plotted in \ref{fig:relu_function}.
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=1.0\textwidth]{../rc/images/graph_relu_function.png}
-\caption{Figure \cite{graph_relu_function}. ReLU function plotted with $x \in {[-100; 100)}$}
-	\label{fig:relu_function}
+   \centering
+   \includegraphics[width=0.5\textwidth]{../rc/images/graph_relu_function.png}
+   \caption{ReLU function plotted with $x \in {[-100; 100)}$ (source \cite{graph_relu_function})}
+   \label{fig:relu_function}
 \end{figure}
 
 In other words, if the input to the ReLU function is negative, it returns zero; otherwise the input value itself is returned. The simplicity of ReLU makes it computationally efficient while still introducing non-linearity. ReLU has become a popular choice in many neural network architectures.
 
-Other activation functions include \emph{Softmax}, \emph{Sigmoid}, which squash the input into the range $(0, 1)$ and \emph{Tanh} with a range of $[-1, 1]$.
+\vspace{0.5cm}
+Other popular activation functions include \emph{Softmax}, \emph{Sigmoid}, which squash the input into the range $(0, 1)$ and \emph{Tanh} with a range of $[-1, 1]$.
 
 
 \subsection{Loss Functions}
@@ -220,7 +223,7 @@ A graphical scheme is shown in figure \ref{fig:cnn_architecture}.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1.0\textwidth]{../rc/images/cnn_architecture.png}
-   \caption{Figure \cite{img_cnn_architecture}. Typical convolutional neural network architecture}
+   \caption{Typical convolutional neural network architecture (source \cite{img_cnn_architecture})}
 	\label{fig:cnn_architecture}
 \end{figure}
 
@@ -230,12 +233,12 @@ Convolutional neural networks posses the ability to automatically identify relev
 
 \subsection{Recurrent Neural Networks}
 
-Recurrent neural networks (RNNs) are well suited to handle sequential data by remembering information about previous inputs. This kind of memory mechanism is achieved by having loops within the neural network, allowing Recurrent neural networks to retain information and consider past in- and outputs when processing current ones. This makes them ideal for tasks like time series prediction, natural language processing, speech recognition, and more.
+Recurrent neural networks (RNNs) are well suited to handle sequential data by remembering information about previous inputs. This kind of memory mechanism is achieved by having loops within the neural network (\ref{fig:rnn_architecture}), allowing recurrent neural networks to retain information and consider past in- and outputs when processing current ones. This makes them ideal for tasks like time series prediction, natural language processing, speech recognition, and more.
 
 \begin{figure}[h]
    \centering
 	\includegraphics[width=0.6\textwidth]{../rc/images/rnn_architecture.pdf}
-   \caption{Example Recurrent neural network architecture \cite{img_rnn_architecture}}
+   \caption{Example Recurrent neural network architecture (source \cite{img_rnn_architecture})}
 	\label{fig:rnn_architecture}
 \end{figure}
 
@@ -252,47 +255,33 @@ The suggested use of RL for vectorization in this paper is inspired by the work 
 
 The agent learns by trial and error, exploring different actions and observing the consequences in terms of rewards. The goal is to discover an optimal policy that leads to the maximum cumulative reward over time. Reinforcement learning has been successfully applied to various domains, including game playing (e.g., AlphaGo), robotics, finance, and more. They have already proven valuable in raster-to-vector conversion \cite{su_marvel_2023}.
 
-\begin{description}
-   \item[Environment]: In the case of the raster-to-vector conversion, the environment is the raster image that is being converted.
-
-   \item[State]: The state is a copy of the original image, which is modified by the agent each time a new shape is predicted.
-
-   \item[Action]: The deletion of the shape that was predicted follows as a action that modifies the state.
-
-   \item[Reward]: The reward is calculated by comparing the original image with the state. To do this comparison, both images would have to be converted into a raster presentation, so that the pixel values can be compared.
-\end{description}
-
-\section{Existing Approaches}
-
-Raster to vector conversion is a well-researched field, with various approaches available. In addition from algorithm based strategies, machine learning, and particularly neural networks, are promising and in active development, as seen in the paper "Image Vectorization: a Review" \cite{dziuba_image_2023}.
-
-Here are some approaches summarized.
-
-\subsection{Algorithmic Approaches}
-
 \begin{enumerate}[label=\Roman*.]
-   \item \textbf{Edge Detection Techniques} Traditional algorithms often rely on edge detection methods to identify boundaries in raster images. These can be used to identify the shapes in the image, which can then be used to generate its vector representation.
+   \item \textbf{Environment}: In the case of the raster-to-vector conversion, the environment is the raster image that is being converted.
 
-   \item \textbf{Hough Transform} The Hough Transform is utilized to detect lines in raster images, serving as a foundation for vectorization. This approach is effective in representing straight lines but may face challenges with curves.
+   \item \textbf{State}: The state is a copy of the original image, which is modified by the agent each time a new shape is predicted.
 
-   \item \textbf{Skeletonization} Skeletonization algorithms aim to reduce shapes in raster images to their core structures, facilitating the extraction of vector representations.
+   \item \textbf{Action}: The deletion of the shape that was predicted follows as a action that modifies the state.
+
+   \item \textbf{Reward}: The reward is calculated by comparing the original image with the state. To do this comparison, both images would have to be converted into a raster presentation, so that the pixel values can be compared.
 \end{enumerate}
 
-\subsection{Deep Learning Approaches}
+\subsection{Residual Neural Networks}
 
-\begin{enumerate}[label=\Roman*.]
-   \item \textbf{Convolutional Neural Networks (CNNs)} CNNs have been employed for raster-to-vector conversion by learning hierarchical features. They excel in capturing spatial relationships and are effective in handling complex patterns.
+Residual Neural Networks (ResNets) facilitate the development of large neural networks. It provides a way for some information to skip one or more layers by adding the input of the layers to their output according to the following formula:
 
-   \item \textbf{Autoencoders} Autoencoders, especially variational autoencoders (VAEs), have shown promise in capturing latent representations of raster images, which can be used for vectorization.
+\[
+   Output = Activation\left( Weight \times Input + Shortcut(Input) \right)
+\]
 
-   \item \textbf{Generative Adversarial Networks (GANs)} GANs, known for generating realistic images, can be adapted to generate vector representations by training on paired raster-vector data.
+The only derivation from traditional neural networks is the $Shortcut(Input)$ term, which can be as simple as a one-to-one mapping of the input, or a projection in case the in- and output dimensions differ. Those shortcut connections help in addressing the vanishing gradient problem, which can occur in very deep networks during backpropagation. ResNets facilitate the training of deeper networks by allowing the gradient to pass directly through the skip connections, even in the case where some layers have nearly zero gradients.
 
-   \item \textbf{Recurrent Neural Networks (RNNs)} RNNs, with their sequential learning capability, are suitable for tasks involving sequential data. They can be applied to capture patterns in raster images that then can be used for vectorization.
+\subsection{Multi-Task Learning}
 
-   \item \textbf{Attention Mechanisms} Models incorporating attention mechanisms, such as Transformer architectures, can focus on relevant parts of raster images during the vectorization process, improving accuracy.
-\end{enumerate}
+Multi-task learning is an expression used to classify neural networks that solve several related tasks simultaneously in the same model. This allows for some layers or blocks of layers to be reused, and can lead to faster performance than training multiple neural networks. It also allows for information to be shared, such as the output of one block which might influence which other blocks are used for further processing of the information.
 
-These approaches represent a spectrum of techniques, each with its strengths and limitations. Hybrid models, which combine algorithmic and deep learning components have do also exist, trying to leverage the benefits of both paradigms.
+Typically for multi-task learning are large neural networks with one or more common layers (here referred to as \emph{front end}), which extract the relevant data for the subsequent layers, followed by a branching into several independent blocks of layers, specific for separate tasks.
+
+Multi-task learning is advantageous for raster-to-vector conversion because typically, much time is spent in the front end with feature extraction. The information extracted in this stage can be used by most if not all subtasks, such as image classification, color extraction and shape approximation. Therefore, it is efficient if this information can be reused for the entire prediction.
 
 %----------------------------------------------%
 % }}}
@@ -316,13 +305,6 @@ This work examines the effectiveness this approach by addressing the following q
    \item What performance can be achieved, and what are the limitations and pitfalls of this approach?
 \end{enumerate}
 
-
-Furthermore, very specific questions are being asked:
-
-\begin{enumerate}[label=\Roman*.]
-   \item How should the data be generated? In large chunks that are temporarily stored on disk? Or batches, stored in memory?
-   \item How should the model be trained?
-\end{enumerate}
 
 %----------------------------------------------%
 % }}}
@@ -353,7 +335,7 @@ A function has been written for each shape, returning a numpy array that describ
 
 Here is a breakdown of the different shapes and their data representation:
 \begin{itemize}
-   \item Line: A line is defined through two points, width and color: [x1, y1, x2, y2, width, <color>]. Zeros are added for padding. Width and color are not used by the model in the demonstration.
+   \item Line: A line is defined through two points, width and color: [x1, y1, x2, y2, width, \emph{color}]. Zeros are added for padding. Width and color are not used by the model in the demonstration.
    \item Circle: Center, radius and color: [x, y, r, \emph{color}].
    \item Rectangle: One corner, width, height and color: [x1, y1, w, h, \emph{color}].
    \item Triangle: Three corner points and color: [x1, y1, x2, y2, x3, y3, \emph{color}].
@@ -384,7 +366,7 @@ Deep learning is a very resource intensive task. Due to time and resource constr
       \hline
       \textbf{Language}    & \textbf{Perfor-mance} & \textbf{Machine learning libraries} & \textbf{Other ecosystem*} & \textbf{Represent-ative ML Libraries} & \textbf{Rating} \\
       \hline
-      Python      & 1 & 5 & 5 & Pytorch, TF        & \emph{40} \\ \hline
+      Python      & 1 & 5 & 5 & Pytorch, TF        & \textbf{\emph{40}} \\ \hline
       Javascript  & 2 & 4 & 5 & BrainJS, Ml5       & \emph{37} \\ \hline
       C++         & 5 & 3 & 4 & TF, mlpack, CNTK   & \emph{32} \\ \hline
       C           & 5 & 1 & 2 & Darknet, Libtorch  & \emph{16} \\ \hline
@@ -459,7 +441,9 @@ Deep learning is a very resource intensive task. Due to time and resource constr
 
 \subsection{Conclusion}
 
-Python is known to be the most popular or even the best choice for machine learning, due to its various well established libraries and ecosystem. Thus, it has not come as a surprise that the evaluation in this work has come to the same conclusion.
+Python is known to be the most popular or even the best choice for machine learning, due to its various well established libraries and ecosystem. Thus, it has not come as a surprise that the evaluation in this work has come to the same conclusion. Python is an easy language with a large ecosystem and very active community. An advantage that is often not considered is the ability of Cython to call back and forth into C as well as Python code, thus making an application written in Python or Cython gradually optimizable.
+
+However, the performed evaluation is based on experience and research of the author, as well as common knowledge and is thus not subjective nor comprehensive. It is meant to give an overview of the options and it was tried to make as objective as possible.
 
 % }}}
 
@@ -467,22 +451,25 @@ Python is known to be the most popular or even the best choice for machine learn
 \section{Framework Choice}
 
 \begin{table}
-   \begin{tabular} {|c||p{1.5cm}|p{2.0cm}|p{1.5cm}|p{2.5cm}||p{2.2cm}|}
+   \begin{tabular} {|c||p{4.0cm}|p{4.0cm}||p{3.0cm}|}
       \hline
-      \textbf{Criteria}    & \textbf{Tensorflow} & \textbf{Pytorch} & \textbf{Project Focus} \\
+      \textbf{Criteria}          & \textbf{Tensorflow} & \textbf{Pytorch} & \textbf{Project Focus} \\
       \hline
+      Written in           & C++ & C & \emph{-} \\ \hline
+      Main focus           & Comprehensiveness & Simplicity, fast development in a Pythonic way & \emph{Fast development} \\ \hline
+      Ecosystem            & Huge ecosystem with many tools & Comparatively few tools available & \emph{Many good tools} \\ \hline
       Primary application  & Application Production & AI Research & \emph{AI Research} \\ \hline
       Performance          & Highly optimized for large-scale training & Focuses on flexible training and experimentation & \emph{Flexibility, fast iterations and changes} \\ \hline
-      Industrye  & Application Production & AI Research & \emph{AI Research} \\ \hline
-      Primary application  & Application Production & AI Research & \emph{AI Research} \\ \hline
-      \hline\hline
-      \textbf{Relevance} & \textbf{1} & \textbf{5} & \textbf{3} & - & \\
+      Community            & One of the most often used libraries & Often used library & \emph{More often used} \\ \hline
       \hline
    \end{tabular}
    \caption{Framework evaluation table}
    \label{table:framework_evaluation}
 \end{table}
 
+\subsection{Conclusion}
+
+After experimenting with both frameworks, \emph{Pytorch} has been chosen for the demonstration. It is a popular and widely used framework and its goals align better with the goals of this work: Simplicity and fast development speed in order to experiment with different architectures.
 \vspace{0.5cm}
 
 \section{Data Generation}
@@ -493,7 +480,7 @@ All data generation is implemented in \lstinline{rtov/data/} and its subdirector
 
 \section{Model Architecture}
 
-The model in the demonstration is a convolutional neural network with several back end. A back end is a collection of fully connected layers, which can be trained on the output of the front end (i. e. the convolutional and pooling layers). At first, the input image is fed through the convolutional front end: Two stacks with each a convolution layer with ReLU activation followed by a Max Pooling layer. Subsequently, the result is passed through one of the back end that is responsible for the classification of the shape. Depending on the shape that has been predicted in the previous step, the same output of the convolutional layers is passed through another stack of fully connected layers which are responsible for the respective shape. Through this mechanism, a conditional form of multi-task learning is achieved.
+The model in the demonstration is a convolutional neural network with several back end. A back end is a collection of fully connected layers, which can be trained on the output of the front end (i. e. the convolutional and pooling layers). At first, the input image is fed through the convolutional front end: Two blocks with each a convolution layer with ReLU activation followed by a Max Pooling layer. Subsequently, the result is passed through one of the back end that is responsible for the classification of the shape. Depending on the shape that has been predicted in the previous step, the same output of the convolutional layers is passed through another block of fully connected layers which are responsible for the respective shape. Through this mechanism, a conditional form of multi-task learning is achieved.
 
 %----------------------------------------------%
 % }}}
@@ -506,7 +493,25 @@ The model in the demonstration is a convolutional neural network with several ba
 
 \chapter{Results}
 
-\section{Performance}
+The model in the demonstration has been able to approximate the shapes it was trained on. The accuracy would need to be improved in order to provide usable results. The given model had problems with approximating triangles; Rather than estimate the positions of the vertices, the model has learned to place those points grouped around the center of the triangle.
+
+The following illustrations are sources \cite{results_demonstration1}, \cite{results_demonstration2} and \cite{results_demonstration3} . They are example outputs of the model evaluation (obtained through the \emph{test} command in the demonstration). Two images each form a pair, the right one of which is the original raster representation, the left is the output of the model when evaluated on the right image. The model output has been converted into a raster format. The exact numerical data is shown above the respective image.
+
+\begin{figure}[h]
+   \includegraphics[width=1.0\textwidth]{../rc/images/all_shapes_approx_visual1.png}
+   \label{fig:results_demonstration1}
+\end{figure}
+
+\begin{figure}[h]
+   \includegraphics[width=1.0\textwidth]{../rc/images/all_shapes_approx_visual2.png}
+   \label{fig:results_demonstration2}
+\end{figure}
+
+\begin{figure}[h]
+   \includegraphics[width=1.0\textwidth]{../rc/images/all_shapes_approx_visual3.png}
+   \label{fig:results_demonstration3}
+\end{figure}
+
 
 %----------------------------------------------%
 % }}}
@@ -564,16 +569,21 @@ There are various strategies and architectures for converting raster images to v
          \item Converting the output, together with the previous predictions, into a raster image, and comparing it to the input image. This could lead to more precise results and provides more meaningful feedback to the model.
       \end{itemize}
 
-   \item Recurrent capabilities can be incorporated in order to make the model remember which shapes have already been predicted. This could help the model to learn relations between the shapes in a given image.
+   \item Recurrent capabilities can be incorporated:
+      \begin{itemize}
+         \item Long term memory, in order to make the model remember which shapes have already been predicted. This could help the model to learn relations between the shapes in a given image. However, using reinforcement learning would facilitate this further, since this information can be stored in the \emph{state}.
+         \item Short term memory can be very advantageous in the shape-specific layers. This could resolve the difficulties the model had with approximating the vertices of triangles in the demonstration.
+      \end{itemize}
 \end{enumerate}
 
 
 \pagebreak
 \section{Conclusion}
 
-The demonstration and research have shown that deep learning with generated vector-raster image pairs can be a useful technique for raster vectorization, at least in the first stage of training a neural network. The generation of the random images helps to obtain valuable labeled image pairs. However, the demonstration has shown that approximating a raster image in a vector format remains a challenging task even with an infinite amount of training data available.
+The demonstration and research have shown that deep learning with generated vector-raster image pairs can be a useful technique for raster vectorization, at least in the first stage of training a neural network. The generation of the random images helps to obtain valuable labeled image pairs.
+However, the demonstration has shown that approximating a raster image in a vector format remains a challenging task even with an infinite amount of training data available. The model in the demonstration has been able to learn how to classify the four shapes, and could extract the relevant information to roughly approximate most of them; triangles have proven more challenging.
 
-Furthermore, an architecture has been proposed that might be able to leverage the advantages of different deep learning architectures and techniques. It might be a starting point for future works, and successfully implementing such a neural network and training process might as well result in an efficient way to vectorize raster images in practical applications.
+Furthermore, an architecture has been proposed that might be able to leverage the advantages of various deep learning architectures and techniques, which could address those challenges. It might be a starting point for future works, and successfully implementing such a neural network and training process might as well result in an efficient way to vectorize raster images in practical applications.
 
 
 %----------------------------------------------%
@@ -603,6 +613,32 @@ Furthermore, an architecture has been proposed that might be able to leverage th
 \begin{refcontext}[labelprefix=A]
    \printbibliography[type=misc, keyword={AITool}, title={AI Tools}]
 \end{refcontext}
+
+%----------------------------------------------%
+% }}}
+%----------------------------------------------%
+
+%----------------------------------------------%
+% {{{
+%----------------------------------------------%
+
+\pagebreak
+
+Hiermit bestätige ich, Lars Hösli, meine Maturaarbeit selbstständig verfasst
+und alle verwendeten Quellen wahrheitsgetreu angegeben zu haben.
+
+Ich nehme zur Kenntnis, dass meine Arbeit zur Überprüfung der korrekten und
+vollständigen Angabe der Quellen mit Hilfe einer Software geprüft wird. Zu meinem
+eigenen Schutz wird die Software auch dazu verwendet, später eingereichte Arbeiten mit meiner Arbeit elektronisch zu vergleichen und damit Abschriften und
+eine Verletzung meines Urheberrechts zu verhindern. Falls Verdacht besteht, dass
+mein Urheberrecht verletzt wurde, erkläre ich mich damit einverstanden, dass die
+Schulleitung meine Arbeit zu Prüfzwecken herausgibt.
+
+\vspace{2.0cm}
+\emph{Glarus, 03.12.2023}\\
+--------------------------------- ------------------------------------
+
+Ort, Datum und Unterschrift
 
 %----------------------------------------------%
 % }}}
