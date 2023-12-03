@@ -544,12 +544,25 @@ They are rendered in the model evaluation part, obtained through the \emph{test}
 
 \chapter{Discussion}
 
-\section{Opportunities and Limitations}
+\section{Results of the Demonstration}
 
-The demonstration has been done in a limited scope and does not provide a basis for making general statements about the usage of generated data. That being said, 
+A interesting observation was that the neural network had problems with approximating the shape \emph{triangle}.
+There is an explanation for why it was the triangle that the model could not learn to estimate correctly. It is likely due to the nature of the data it needed to extract from the image. What makes the data of the triangle different from the other shapes is that it consisted of three independent vertices, from which the model could have chosen any at any place. The comparison through the MSE loss was not developed enough to determine that a correct vertex prediction but in another order than the label was correct. Thus, the model may not have had the opportunity to make a guess that is rated as correct with a probability higher than $\frac{1}{3}$. The combination of learning rate and this probability might have caused that problem to arise. From the model's point of view, guessing of the real vertices must have not been worth it compared to approximating the center of the triangle. With this strategy, the model tried to minimize the punishment received through the quadratic nature of the MSE loss function.
 
-The model in the demonstration has shown that a neural network that has been trained on randomly generated raster-vector representation pairs can produce results that resemble the original raster image. In that regard, the demonstration has confirmed the initial hypothesis.
+This seems to be a problem that is very specific for the demonstration and is likely no an inherent issue with the more general approach.
 
+\section{Goals}
+
+The minimal goal has been achieved and the first question has been answered. It is a possible to approximate shapes in a raster image with a vector representation using a neural network that is trained on automatically generated data, as the demonstration has shown. The deep learning model had some difficulties with determining the vertices of triangles. It also could not achieve usable accuracy with the other shapes, but this can be attributed to the time and resource constrains.
+
+This leads to the second question. \emph{What strategies or measures have to be taken to make this [approach] feasible?}
+This question could be answered as well. Using a Convolutional Neural Network with multi-task learning was not capable correctly approximating the shapes.
+
+\section{Approach}
+
+The demonstration has been done in a limited scope and does not provide a basis for making general statements about the usage of generated data for raster vectorization.
+
+That being said, The model in the demonstration has shown that a neural network that has been trained on randomly generated raster-vector representation pairs can produce results that resemble the original raster image.
 No limiting factors habe been observed that would hinder the scaling of this approach, and there are no apparent reasons for why a neural network with sufficient complexity and training should not be able to perform vectorization of simple raster images.
 
 
@@ -563,17 +576,17 @@ Those are limitations of demonstration and not necessarily of the approach itsel
 Those observations could be made:
 
 \begin{enumerate}[label=\Roman*.]
-   \item Even a model trained on a CPU can quickly learn to extract shapes from raster images using the generated data
-   \item To scale and improve the model, many optimizations could still be taken in the sections model architecture, training data and training parameter optimization
+   \item Even a model trained on a CPU can quickly learn to extract shapes from raster images using the generated data.
+   \item To scale and improve the model, many optimizations could still be taken in the sections model architecture, training data and training parameter optimization.
    \item No obstacles have been observed when increasing the complexity of the training data. There is no apparent reason why it should not be possible to make a model learn more complex data.
-   \item A more sophisticated model may be needed for further experiments
+   \item A more sophisticated model may be needed for further experiments.
 \end{enumerate}
 
 
 
 \section{Proposed Model Architecture}
 
-There are various strategies and architectures for converting raster images to vector images using deep learning. Based on the experience gained during the progress of this work, an architecture is proposed for projects extending beyond this thesis. A comprehensive structure is given that incorporates elements from various deep learning strategies, combining Recurrent Convolutional networks with reinforcement learning while keeping the multi-task learning nature used in the demonstration.
+There are various strategies and architectures for converting raster images to vector images using deep learning. Based on the experience gained during the progress of this work, an architecture is proposed for projects extending beyond this thesis. A comprehensive structure is given that incorporates elements from various deep learning strategies, combining Recurrent Convolutional Networks with Reinforcement Learning while keeping the multi-task learning nature used in the demonstration.
 
 \begin{enumerate}[label=\Roman*.]
    \item A random array of numbers is generated, which describe the image and its shapes in a vector-like format.
@@ -662,17 +675,17 @@ The following illustrations are example outputs of the \emph{test} command of th
 \vspace{2cm}
 
 \begin{figure}[H]
-   \includegraphics[width=1.0\textwidth]{../rc/images/all_shapes_approx_visual1.png}
+   \includegraphics[width=1.0\textwidth]{../rc/images/all_shapes_approx_visual1_condensed.png}
    \label{fig:results_demonstration1}
 \end{figure}
 
 \begin{figure}[H]
-   \includegraphics[width=1.0\textwidth]{../rc/images/all_shapes_approx_visual2.png}
+   \includegraphics[width=1.0\textwidth]{../rc/images/all_shapes_approx_visual2_condensed.png}
    \label{fig:results_demonstration2}
 \end{figure}
 
 \begin{figure}[H]
-   \includegraphics[width=1.0\textwidth]{../rc/images/all_shapes_approx_visual3.png}
+   \includegraphics[width=1.0\textwidth]{../rc/images/all_shapes_approx_visual3_condensed.png}
    \label{fig:results_demonstration3}
 \end{figure}
 
