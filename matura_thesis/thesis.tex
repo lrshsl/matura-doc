@@ -6,7 +6,7 @@
 \documentclass[12pt, a4paper, titlepage]{report}
 \usepackage[
    margin=2.0cm,
-   top=3.5cm,
+   top=3.3cm,
 ]{geometry}
 
 
@@ -81,7 +81,7 @@
 	 % Title
     \Huge{\textbf{\inserttitle}}
     \par\vspace{0.8cm}
-    \LARGE{Matura Work by \insertauthor}\\
+    \LARGE{Matura Paper by \insertauthor}\\
     \vspace{0.2cm}
     \large{Supervisor: Beat Temperli}\\
     \vspace{0.2cm}
@@ -104,13 +104,14 @@
        The conversion from raster images to vector representations remains a challenging task to this day and is actively researched. Due to the inherent difficulties that algorithmic approaches face, such as finding shapes in noisy or blurred images under varying lighting conditions, more research is being done using machine learning, where the most apparent problem is the acquisition of appropriate training data. Therefore, automatically generating pairs of raster images and their corresponding vector representations can be advantageous.
        \vspace{0.3cm}
 
-		 This paper explores this particular approach: Training a machine learning model on generated data pairs. A demonstration is conducted in a limited scope, where a deep learning model is trained on on-the-fly generated data in order to perform the conversion from raster images containing clearly visible shapes into vector representations. The model used in the demonstration is a simple multi-task learning model with a Convolutional Neural Network as a front end and various branches responsible for classifying the shape or determining the features of a particular shape.
+		 This paper explores this particular approach: Training a machine learning model on generated data pairs. A demonstration is conducted in a limited scope, where a deep learning model is trained on on-the-fly generated data in order to perform the conversion from raster images containing clearly visible shapes into vector representations. The model used in the demonstration is a simple multi-task learning model with a convolutional neural network as a front end and various branches responsible for classifying the shape or determining the features of a particular shape.
        \vspace{0.3cm}
 
        The model, although trained on a limited number of images, was able to determine the shape with high accuracy and learned to approximate the data relevant for specifying the shapes \emph{Line}, \emph{Rectangle} and \emph{Circle}. The vertices of the shape \emph{Triangle} have proven to be more challenging to estimate and the model presented in the demonstration was not able to provide an accurate representation for this shape.
 
        \vspace{1cm}
-       The code for the demonstration can be found online at \href{https://github.com/lrshsl/RtoV}{github.com/lrshsl/RtoV}
+       The code for the demonstration can be found online at
+       \href{https://github.com/lrshsl/RtoV}{github.com/lrshsl/RtoV}
     \end{abstract}
 
 \end{titlepage}
@@ -145,7 +146,7 @@ As a consequence, many different formats and compression methods have emerged. T
 Raster and vector graphics are two fundamentally different approaches to representing the content of an image. While raster images store the color values of small parts of a given picture - usually referred to as pixels - to approximate what the image looks like, vector formats store a specification for what shapes can be seen, similar to how humans receive images.
 
 Both methods have pros and cons and are more appropriate for certain situations than others.
-Vector formats have numerous advantages for storing images that are easily describable with shapes, especially those consisting of uniformly colored areas or easily describable gradients. To this class of images belong schemes, plots, logos, icons and many more. In these cases, vector graphics can be a more precise and efficient representation of the image than raster formats. A shape described in a vector specification be stored with an infinite resolution, since there are no pixels, while being less storage intensive at the same time. Raster formats, in turn, are better suited for images without easily distinguishable shapes, such as portraits or landcape pictures or photorealistic paintings.
+Vector formats have numerous advantages for storing images that are easily describable with shapes, especially those consisting of uniformly colored areas or easily describable gradients. To this class of images belong schemes, plots, logos, icons and many more. In these cases, vector graphics can be a more precise and efficient representation of the image than raster formats. A shape described in a vector specification can be stored with an infinite resolution, since there are no pixels, while being less storage intensive at the same time. Raster formats, in turn, are better suited for images without easily distinguishable shapes, such as portraits, landcape pictures or photorealistic paintings.
 
 \subsection{Problem Description}
 
@@ -155,7 +156,7 @@ With deep learning, those problems can partially be addressed. The model itself 
 However, deep learning models have their own difficulties. For supervised learning, accumulating sufficient training data is a significant challenge and often a limiting factor.
 
 Therefore a way to convert raster images into a vector format is both beneficial and there is no universal solution to it. Deep learning is a powerful tool for this task, especially if the data to train a neural network could be generated indefinitely.
-This is why this thesis has been done on the topic of raster-to-vector conversion with deep learning, and focuses on the usage of generated training data to accomplish this task.
+This is why this thesis has been conducted on the topic of raster-to-vector conversion with deep learning, and focuses on the usage of generated training data to accomplish this task.
 
 
 \section{Fundamentals}
@@ -165,16 +166,16 @@ To understand the concepts and terms used in this paper, a certain basic knowled
 \subsection{Neural Networks}
 
 Deep learning is done using \emph{neural networks} with several layers of \emph{neurons}. These neurons are connected by \emph{weights} with other neurons.
-Each layer of a typical neural network has a \emph{bias value} and an \emph{activation function} associated with it, which are responsible for deciding if a neuron should be activated or not. The network learns through making decisions, which are rated by loss functions. The model is subsequently either punished or rewarded, and its weights are adapted. In that manner, neural networks learn how to accomplish a task through trial and error.
+Each layer of a typical neural network has a \emph{bias value} and an \emph{activation function} associated with it. They are responsible for deciding whether a neuron should be activated or not. The network learns through making decisions, which are judged by loss functions. The model is subsequently either punished or rewarded, and its weights are adapted. In that manner, neural networks learn how to accomplish a task through trial and error.
 
 Whilst the bias value is relatively trivial, the various activation and loss functions are important to understand.
 
 \subsection{Activation Functions}
 
-Activation functions are essential components in neural networks that introduce non-linearities. These functions decide whether a neuron should be activated or not based on the weighted sum of its inputs and possibly a bias value if provided.
+Activation functions are essential components in neural networks. They are, together with the bias value, responsible for deciding whether a given neuron should be activated or not based on the weighted sum of its inputs.
 
 One widely adopted activation function is the rectified linear unit (ReLU) function.
-ReLU, short for rectified linear unit, is a simple yet efficient activation function. Mathematically, it is defined as:
+ReLU is a simple yet efficient activation function. Mathematically, it is defined as:
 \[ ReLU(x) = \max(0, x) \]
 Which is graphically plotted in \ref{fig:relu_function}.
 
@@ -225,32 +226,32 @@ Deep neural networks can be structured in different ways, leading to different k
 
 \subsection{Convolutional Neural Networks}
 
-A convolutional neural network (CNN) is a type of neural network that uses a convolutional layer to extract features from an input image. 
+A Convolutional neural network (CNN) is a type of neural network that uses a convolutional layer to extract features from an input image. 
 
-Reducing the information of individual pixels to a sequence of distinct features proves beneficial, as fully connected layers can subsequently learn to establish connections based on these features. In order to extract the relevant features, it uses different \emph{kernels}, which are moved through the images using a certain \emph{stride} value and are applied to the pixel values. A features map is produced. The \emph{kernel} and \emph{stride} values can be adapted to reduce the information for the following layers directly with the convolution layer.
-Alternatively, after each convolution, a pooling function can be applied to the feature maps, which reduces the number of features that need to be processed. A usual architecture consists of repeating convolution and pooling layers, which extract the relevant features, and finally fully connected neuronal layers that can logically process the information.
+Reducing the information of individual pixels to a sequence of distinct features proves beneficial, as fully connected layers can subsequently learn to establish connections based on these features. In order to extract the relevant features, a CNN uses different \emph{kernels}, which are moved through the images using a certain \emph{stride} value and are applied to the pixel values. A features map is produced. The kernel and stride values can be adapted to reduce the information for the following layers directly with the convolution layer.
+Alternatively, after each convolution, a \emph{pooling} function can be applied to the feature maps. A usual architecture consists of repeating convolution and pooling layers, which extract the relevant features, and finally fully connected neuronal layers that can logically process the information.
 
 A graphical scheme is shown in figure \ref{fig:cnn_architecture}.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1.0\textwidth]{../rc/images/cnn_architecture.png}
-   \caption{Typical Convolutional Neural Network architecture (source \cite{img_cnn_architecture})}
+   \caption{Typical convolutional neural network architecture (source \cite{img_cnn_architecture})}
 	\label{fig:cnn_architecture}
 \end{figure}
 
 
-Convolutional neural networks poss the ability to automatically identify relevant features in images. As such, they are invaluable for computer vision, object detection, as well as for classification tasks.
+Convolutional neural networks posses the ability to automatically identify relevant features in images. As such, they are invaluable for computer vision, object detection, as well as for classification tasks and thus for raster-to-vector conversion.
 
 
 \subsection{Recurrent Neural Networks}
 
-Recurrent neural networks (RNNs) are well suited to handle sequential data by remembering information about previous inputs. This kind of memory mechanism is achieved by having loops within the neural network (\ref{fig:rnn_architecture}), allowing Recurrent Neural Networks to retain information and consider past in- and outputs when processing current ones. This makes them ideal for tasks like time series prediction, natural language processing, speech recognition, and more.
+Recurrent neural networks (RNNs) are well suited to handle sequential data by remembering information about previous inputs. This kind of memory mechanism is achieved by having loops within the neural network (\ref{fig:rnn_architecture}), allowing recurrent neural networks to retain information and consider past in- and outputs when processing current ones. 
 
-\begin{figure}[h]
+\begin{figure}[H]
    \centering
 	\includegraphics[width=0.6\textwidth]{../rc/images/rnn_architecture.pdf}
-   \caption{Example Recurrent neural network architecture (source \cite{img_rnn_architecture})}
+   \caption{Example recurrent neural network architecture (source \cite{img_rnn_architecture})}
 	\label{fig:rnn_architecture}
 \end{figure}
 
@@ -258,11 +259,11 @@ RNNs have proven valuable in various applications that involve sequential data, 
 
 \subsection{Reinforcement Learning}
 
-In Reinforcement Learning (RL), a neural network (\emph{agent}) learns to make decisions by interacting with a given \emph{environment}. This agent makes \emph{actions} in the environment which modify a given \emph{state}. Based on these actions, it receives feedback in the form of rewards or punishments. The goal of the agent is to learn how to maximize the reward.
+In reinforcement learning (RL), a neural network (\emph{agent}) learns to make decisions by interacting with a given \emph{environment}. This agent makes \emph{actions} in the environment which modify a given \emph{state}. Based on these actions, it receives feedback in the form of rewards or punishments. The goal of the agent is to learn how to maximize the reward.
 
-The agent learns by trial and error, exploring different actions and observing the consequences in terms of rewards. The goal is to discover an optimal policy that leads to the maximum cumulative reward over time. Reinforcement Learning has been successfully applied to various domains, including game playing (e.g., AlphaGo), robotics, finance, and more. They have already proven valuable in raster-to-vector conversion \cite{su_marvel_2023}.
+The agent learns by trial and error, exploring different actions and observing the consequences in terms of rewards. The goal is to discover an optimal policy that leads to the maximum cumulative reward over time. Reinforcement learning has been successfully applied to various domains, including game playing (e.g., AlphaGo), robotics, finance, and more. They have already proven valuable in raster-to-vector conversion \cite{su_marvel_2023}.
 
-The concept of Reinforcement Learning being very general, a specific use-case for raster-to-vector conversion is presented below. The proposed use of RL for vectorization in this paper is inspired by the work "Marvel - Raster Manga Vectorization via Primitive-wise Deep Reinforcement Learning"  (\cite{su_marvel_2023}).
+The concept of reinforcement learning being very general, a specific use-case for raster-to-vector conversion is presented below. The proposed use of RL for vectorization in this paper is inspired by the work "Marvel - Raster Manga Vectorization via Primitive-wise Deep Reinforcement Learning"  (\cite{su_marvel_2023}).
 
 \begin{enumerate}[label=\Roman*.]
    \item \textbf{Environment}: In the case of the raster-to-vector conversion, the environment is the raster image that is being converted.
@@ -276,12 +277,11 @@ The concept of Reinforcement Learning being very general, a specific use-case fo
 
 \subsection{Multi-Task Learning}
 
-Multi-task learning is an expression used to classify neural networks that solve several related tasks simultaneously in the same model. This allows for some layers or blocks of layers to be reused, and can lead to faster performance than training multiple neural networks separately. It also allows for information to be shared. For instance, the output of one block of layers which might influence which other blocks are used for further processing the information.
+Multi-task learning is an expression used to classify neural networks that solve several related tasks simultaneously in the same model. This allows for some layers or blocks of layers to be reused and can lead to faster performance than training multiple neural networks separately. It also allows for information to be shared. For instance, the output of one block of layers might influence which other blocks are used for further processing the information.
 
-Typically, multi-task learning model are used in large neural networks with several common initial layers (here referred to as \emph{front end}). Those layers are often responsible for extracting the relevant data for the subsequent layers. After the front end, the model may split into several independent branches; blocks of layers, specific for separate tasks.
+Typically, multi-task learning model are used in large neural networks with several common initial layers. Those layers are often responsible for extracting the relevant data for the subsequent layers. After extracting those features, the model may split into several independent branches; blocks of layers, which are specific to a separate tasks each.
 
-\vspace{0.2cm}
-Multi-task learning is advantageous for raster-to-vector conversion. Typically, in raster vectorization, comparatively much time is spent in the initial layers with feature extraction. The information that is extracted in this stage can be used by most if not all subtasks, such as image classification, color extraction and shape approximation. Therefore, it is efficient to reuse the output of these layers for the entire prediction.
+Multi-task learning is advantageous for raster-to-vector conversion. Typically, in raster vectorization models, comparatively much time is spent in the initial layers with feature extraction. The information that is extracted in this stage can be used by most if not all subtasks, such as image classification, color extraction and shape approximation. Therefore, it is efficient to reuse the output of these layers for the entire prediction.
 
 %----------------------------------------------%
 % }}}
@@ -296,13 +296,14 @@ Multi-task learning is advantageous for raster-to-vector conversion. Typically, 
 
 A substantial amount of data is needed to train a machine learning model for vectorization of raster images. An ideal data-set would consist of large collections of pairs of raster and vector representations of the same image, which are typically difficult to obtain. Since the conversion of vector images to raster formats is far less difficult, it could be a valid approach to generate random vector images and then convert them into a raster format, to get those raster-vector pairs on which the model can be trained.
 
-
+\vspace{0.2cm}
 This work examines the effectiveness this approach by addressing the following questions:
 
 \begin{enumerate}[label=\Roman*.]
    \item Is it feasible to approach raster-to-vector graphics conversion with a neural network that is trained on randomly generated data?
    \item What strategies or measures have to be taken in order to make this feasible?
-   \item What performance can be achieved, and what are the limitations and pitfalls of this approach?
+   \item What performance can be achieved?
+   \item What are the limitations and pitfalls of this approach?
 \end{enumerate}
 
 
@@ -317,68 +318,6 @@ This work examines the effectiveness this approach by addressing the following q
 
 \chapter{Method}
 
-\section{Overview}
-
-The training and evaluation data for the model consists of thirty-two on thirty-two pixel images with three color channels, with exactly one shape on each image. The shape is being drawn on all color channels to the pixels that are situated within the shape, resulting in a black shape on a white canvas when plotted.
-The generated shapes, as well as their sizes and positions, are randomized and vary with each function call.
-
-\vspace{0.2cm}
-The training occurs in several steps:
-
-\begin{enumerate}[label=\Roman*.]
-   \item Generation of the training data
-   \item Training of the model
-   \item Evaluation and adjusting of the model and its weights
-\end{enumerate}
-
-
-\subsection{Shape Generation}
-
-The training and evaluation data in the demonstration consists of white images with a single black shape on them. The shapes are one of the following four: Line, Circle, Rectangle and Triangle. The shapes and their parameters - such as position, size or their single vertices - have been randomized. These features are stored as labels are the basis on which the model is trained.
-
-A function has been developed for the random generation of each shape, returning a numpy array that describes the shape in a numerical representation. This allows it to be compared directly to the output of the model, without an additional conversion step, while representing the relevant features of the image with a minimal number of bytes. Since the number of data points differs from each shape, the array is padded with zeros to match the maximum number of data points. This padding is not being used for determining the performance of the model.
-
-\vspace{0.2cm}
-Here is a breakdown of the different shapes and their data representation:
-
-\begin{itemize}
-   \item Line: A line is defined through two vertices and width: [x1, y1, x2, y2]. Width and color could be added.
-   \item Circle: Center and radius: [x, y, r].
-   \item Rectangle: One corner, width and height: [x1, y1, w, h]. A scalar controlling the rotation could be added.
-   \item Triangle: Three corner points: [x1, y1, x2, y2, x3, y3].
-\end{itemize}
-
-When fully implemented, a color could be included in every shape, taking up four bytes of space, for red, green, blue and alpha channels. In the unmodified demonstration however, the color is not being used since the shape that is being drawn on the raster image is always black.
-
-The function in the current configuration returns a one-dimensional numpy array with a length of six, which corresponds to the number of data points used for a triangle.
-
-
-The vertices, width and height values generated are constrained to ensure that the shape always remains within the image. However, the possibility that two different shapes can result in the same pixels being colored has not been considered. For instance, a triangle with its corners forming a line may lead to the same input image as a line with the same vertices may produce. In such a case, the model could not possibly know the correct shape and might be punished.
-
-The representation that is obtained after the previous step is written to a numpy array with the shape \lstinline{(100, 100, 3)} or, in graphical terms, a white canvas. To convert from this specific representation to a raster image, a function has been developed (the function \lstinline{draw_on_image} in \lstinline{data/draw_shape_on_image.py}) which accomplishes this task using the \emph{OpenCV2} library.
-
-\subsection{Training}
-
-The training process is structured in epochs, which consist of several batches each. The batch size and the number of epochs are parameterized and can be set by the user, either as flags that are passed to the program or, in the case of the number of epochs, interactively after each training.
-
-The training process on a batch can further be broken down into sub steps:
-
-\begin{enumerate}[label=\Roman*.]
-   \item The training images and their labels are generated as explained above and received from the data-loader in a batch
-   \item The model processes the images from the batch
-   \item The shape loss is computed using the appropriate loss functions
-   \item Neural network is being back-propagated with both losses
-   \item The losses are recorded for the statistics
-\end{enumerate}
-
-The optimizer automatically updates the model according to the back-propagation of the losses. The most important factor for the effectiveness the training is the learning rate, which is a scalar value that determines the impact of the losses on the weights of the model. In the demonstration, no automatic learning rate optimizer is used. However, it can be specified interactively. Through that procedure, the model is trained on all batches.
-
-\subsection{Evaluation}
-
-For the evaluation of the model, its output, which is a numpy array containing a batch of shape predictions and one which contains a batch of the shape specifications is being compared to the ground truth. The shape specifications are numpy arrays with data in the same representation as the one the raster image is generated from.
-This is done using the following loss functions: \emph{cross-entropy loss} (CE) for the shape prediction and \emph{mean squared error} (MSE) for the prediction of the data specific to the shape.
-
-
 \section{Language Choice}  % {{{
 
 Deep learning is a very resource intensive task. Due to time and resource constraints, the language choice was primarily based on the expected development time, but also the flexibility and expected runtime performance of the language and its frameworks and libraries. However, since the computational intensive parts are done within the deep learning library, the availability of performant and established machine learning libraries or frameworks was a higher priority than the performance of the language. A rich and mature ecosystem in general were important as well. On this basis, the table \ref{table:language_evaluation} has been produced, which assigns points to each of the relevant factors. They were mulitiplied by a relevance factor to determine the best fit for the demonstration.
@@ -387,7 +326,7 @@ Furthermore, a more in-depth case study of the different languages has been cond
 \begin{table}[h]
    \begin{tabular} {|c||p{2.0cm}|p{2.5cm}|p{2.5cm}|p{3.0cm}||p{1.5cm}|}
       \hline
-      \textbf{Language}    & \textbf{Perfor-mance} & \textbf{Machine learning libraries} & \textbf{Other ecosystem*} & \textbf{Represent-ative ML Libraries} & \textbf{Rating} \\
+      \textbf{Language}    & \textbf{Perfor-mance} & \textbf{Machine learning libraries} & \textbf{Other ecosystem*} & \textbf{Representative ML Libraries} & \textbf{Rating} \\
       \hline
       Python      & 1 & 5 & 5 & Pytorch, TF        & \textbf{\emph{40}} \\ \hline
       Javascript  & 2 & 4 & 5 & BrainJS, Ml5       & \emph{37} \\ \hline
@@ -472,10 +411,10 @@ However, the performed evaluation is based on experience and research of the aut
 
 % }}}
 
-
 \section{Framework Choice}
 
-After deciding to write the demonstration in Python, the frameworks had to be evaluated in order to choose the best option. After 
+After deciding to write the demonstration in Python, the frameworks had to be evaluated in order to choose the best option. Since \emph{Keras} has been merged into Tensorflow, the main choice was between Tensorflow and Pytorch.
+A point for point comparison was done, with no numerical evaluation \ref{table:framework_evaluation}.
 
 \begin{table}
    \begin{tabular} {|c||p{4.0cm}|p{4.0cm}||p{3.0cm}|}
@@ -487,7 +426,7 @@ After deciding to write the demonstration in Python, the frameworks had to be ev
       Ecosystem            & Huge ecosystem with many tools & Comparatively few tools available & \emph{Many good tools} \\ \hline
       Primary application  & Application Production & AI Research & \emph{AI Research} \\ \hline
       Performance          & Highly optimized for large-scale training & Focuses on flexible training and experimentation & \emph{Flexibility, fast iterations and changes} \\ \hline
-      Community            & One of the most often used libraries & Often used library & \emph{More often used} \\ \hline
+      Community            & One of the most used libraries & Often used library & \emph{More often used} \\ \hline
       \hline
    \end{tabular}
    \caption{Framework evaluation table}
@@ -499,20 +438,76 @@ After deciding to write the demonstration in Python, the frameworks had to be ev
 After experimenting with both frameworks, \emph{Pytorch} has been chosen for the demonstration. It is a popular and widely used framework and its goals align better with the goals of this work: Simplicity and fast development speed in order to experiment with different architectures is invaluable for this work.
 \vspace{0.5cm}
 
-\section{Data Generation}
 
-The data that the model uses for training consists of raster images containing one shape in each. The images are internally represented as numpy arrays, where each entry represents the color values of a pixel. The background is white (i. e. RGB values set to (1, 1, 1)), and the pixels that fall within the shape are set to (0, 0, 0), thus appearing black, so that the contrast between shape and background is maximized.
+\section{Overview of the Demonstration}
 
-All data generation is implemented in \lstinline{rtov/data/} and its subdirectories. A class, \lstinline{LazyDataset}, which inherits from the \lstinline{torch.utils.data.Dataset}, provides an interface, which is a Dataloader (\lstinline{torch.utils.data.Dataloader}) object can use later to get the next image. Therefore, the method \lstinline{__getitem__(self, i: int)} is provided, which loads a numpy array, draws a random shape on it and transforms it into a vector.
+The training and evaluation data for the model in the demonstration consists of thirty-two on thirty-two pixel images with three color channels, with exactly one shape on each image. The shape is being drawn on all color channels to the pixels that are situated within the shape, resulting in a black shape on a white canvas when plotted.
+The generated shapes, as well as their sizes and positions, are randomized and vary with each function call.
+
+\vspace{0.2cm}
+The training occurs in several steps:
+
+\begin{enumerate}[label=\Roman*.]
+   \item Generation of the training data
+   \item Training of the model
+   \item Evaluation and adjusting of the model and its weights
+\end{enumerate}
+
+
+\subsection{Shape Generation}
+
+The training and evaluation data in the demonstration consists of white images with a single black shape on them. The shapes are one of the following four: \emph{Line}, \emph{Circle}, \emph{Rectangle} and \emph{Triangle}. The shapes and their parameters - such as position, size or their vertices - have been randomized. These features are stored as labels and provide the basis on which the model is trained.
+
+A function has been developed for the random generation of each shape, returning a numpy array that describes the shape in a numerical representation. This allows it to be compared directly to the output of the model, without an additional conversion step, while representing the relevant features of the image with a minimal number of bytes. Since the number of data points differs from each shape, the array is padded with zeros to match the maximum number of data points. This padding is not being used for determining the performance of the model.
+
+\vspace{0.2cm}
+Here is a breakdown of the different shapes and their data representation:
+
+\begin{itemize}
+   \item Line: A line is defined through two vertices and width: [x1, y1, x2, y2]. Width and color could be added.
+   \item Circle: Center and radius: [x, y, r].
+   \item Rectangle: One corner, width and height: [x1, y1, w, h]. A scalar controlling the rotation could be added.
+   \item Triangle: Three corner points: [x1, y1, x2, y2, x3, y3].
+\end{itemize}
+
+When fully implemented, a color could be included in every shape, taking up four bytes of memory, for red, green, blue and alpha channels. In the unmodified demonstration however, the color is not being used since the shape that is being drawn on the raster image is always black.
+The function in the current configuration returns a one-dimensional numpy array with a length of six, which corresponds to the number of data points used for a triangle.
+
+
+The vertices, width and height values that have been generated are constrained to ensure that the shape always remains within the image. However, the possibility that two different shapes can result in the same pixels being colored has not been considered. For instance, a triangle with its corners forming a line may lead to the same input image as a line with the same vertices may produce. In such a case, the model could not possibly know the correct shape and might be punished.
+
+The representation that is obtained after the previous step is written to a numpy array with the shape \lstinline{(100, 100, 3)} or, in graphical terms, a white canvas of 100 times 100 pixels. To convert from this specific representation to a raster image, a function has been developed (the function \lstinline{draw_on_image} in \lstinline{data/draw_shape_on_image.py}) which accomplishes this task using the \emph{OpenCV2} library.
+
+\subsection{Training}
+
+The training process is structured in epochs, which consist of several batches each. The batch size and the number of epochs are parameterized and can be set by the user, either as flags that are passed to the program or, in the case of the number of epochs, interactively after each training.
+
+The training process on a batch can further be broken down into sub steps:
+
+\begin{enumerate}[label=\Roman*.]
+   \item The training images and their labels are generated as explained above and received from the data-loader in a batch
+   \item The model processes the images from the batch
+   \item The shape loss is computed using the appropriate loss functions
+   \item Neural network is being back-propagated with both losses
+   \item The losses are recorded for the statistics
+\end{enumerate}
+
+The optimizer automatically updates the model according to the back-propagation of the losses. The most important factor for the effectiveness the training is the learning rate, which is a scalar value that determines the impact of the losses on the weights of the model. In the demonstration, no automatic learning rate optimizer is used. However, it can be specified interactively. Through that procedure, the model is trained on all batches.
+
+\subsection{Evaluation}
+
+For the evaluation of the model, its output is being compared to the ground truth. The model output consists of a numpy array containing a batch of shape predictions and second array containing a batch of the shape specifications. The shape specifications are numpy arrays with data in the same representation as the one the raster image is generated from.
+This is done using the following loss functions: \emph{cross-entropy loss} (CE) for the shape prediction and \emph{mean squared error} (MSE) for the prediction of the data specific to the shape.
 
 \section{Model Architecture}
 
-The model in the demonstration is a Convolutional Neural Network, with the usual structure, with several branches as it is typical for multi-task learning. Each branch is a collection of fully connected layers, which can be trained on the output of the front end (i. e. the convolutional and pooling layers).
-First, the input image is fed through the convolutional front end: Two blocks with each a convolution layer with ReLU activation followed by a Max Pooling layer. Subsequently, the result is passed through one of the back end that is responsible for the classification of the shape. Depending on the shape that has been predicted in the previous step, the same output of the convolutional layers is passed through another block of fully connected layers which are responsible for the respective shape. Through this mechanism, a conditional form of multi-task learning is achieved, as it is seen in \ref{fig:rtov_architecture}.
+The model in the demonstration is a convolutional neural network, with the usual structure, with several branches as it is typical for multi-task learning. Each branch is a collection of fully connected layers, which can be trained on the output of the front end (i. e. the convolutional and pooling layers).
+First, the input image is fed through the convolutional front end: Two blocks with each a convolution layer with ReLU activation followed by a max pooling layer. Subsequently, the result is passed through one of the branches that is responsible for the classification of the shape. Depending on the shape that is being predicted in this branch, a branch specific for that shape is being used.
+For that, the same output of the convolutional layers is passed through another block of fully connected layers which are responsible for the respective shape. Through this mechanism, a conditional form of multi-task learning is achieved, as it is seen in \ref{fig:rtov_architecture}.
 
 \begin{figure}[h]
-   \includegraphics[width=1.0\textwidth]{../rc/images/rtov_architecture.pdf}
-   \caption{Model architecture of the demonstration \cite{scheme_rtov_architecture}}
+   \includegraphics[width=0.8\textwidth]{../rc/images/rtov_architecture.pdf}
+   \caption{Model architecture of the demonstration \cite{scheme_rtov_architecture}. The gray boxes are the in- and outputs of the model; Bold arrows indicate the passing of the output of one layer to another. The red boxes are the predictions, while the other boxes represent the separate layers. The numbers under the fully connected layers show the number of neurons in the respective layer.}
    \label{fig:rtov_architecture}
 \end{figure}
 
@@ -527,10 +522,12 @@ First, the input image is fed through the convolutional front end: Two blocks wi
 
 \chapter{Results}
 
-The model in the demonstration has been able to approximate the shapes it was trained on. The accuracy would need to be improved in order to provide usable results. The given model had problems with approximating triangles; Rather than estimate the positions of the vertices, the model has learned to place those points grouped around the center of the triangle.
+The model in the demonstration has been able to approximate the shapes it was trained on. The vertex coordinates usually have a derivation from the ground truth of around 5 pixels for the shapes line, circle or rectangle. The accuracy would need to be improved in order to provide usable results.
 
-Three illustrations are in the appendix for example outputs of the model: Figures \ref{fig:results_demonstration1}, \ref{fig:results_demonstration2} and \ref{fig:results_demonstration3}.
-They are rendered in the model evaluation part, obtained through the \emph{test} command in the demonstration.
+The given model had problems with approximating triangles; Rather than estimate the positions of the vertices, the model has learned to place those points grouped around the center of the triangle.
+
+Three illustrations can be found in the appendix for example outputs of the model: Figures \cite{results_demonstration1}, \cite{results_demonstration2} and \cite{results_demonstration3}.
+These outputs can be reproduced by following the documentation at \href{https://github.com/lrshsl/rtov/tree/main/docs}{https://github.com/lrshsl/rtov/tree/main/docs} or scanning the QR-Code in the appendix.
 
 
 %----------------------------------------------%
@@ -547,59 +544,55 @@ They are rendered in the model evaluation part, obtained through the \emph{test}
 \section{Results of the Demonstration}
 
 A interesting observation was that the neural network had problems with approximating the shape \emph{triangle}.
-There is an explanation for why it was the triangle that the model could not learn to estimate correctly. It is likely due to the nature of the data it needed to extract from the image. What makes the data of the triangle different from the other shapes is that it consisted of three independent vertices, from which the model could have chosen any at any place. The comparison through the MSE loss was not developed enough to determine that a correct vertex prediction but in another order than the label was correct. Thus, the model may not have had the opportunity to make a guess that is rated as correct with a probability higher than $\frac{1}{3}$. The combination of learning rate and this probability might have caused that problem to arise. From the model's point of view, guessing of the real vertices must have not been worth it compared to approximating the center of the triangle. With this strategy, the model tried to minimize the punishment received through the quadratic nature of the MSE loss function.
+
+There is an explanation for why it was the triangle that the model could not learn to estimate correctly: It is likely due to the nature of the data it needed to extract from the image. What makes the data of the triangle different from the other shapes is that it consisted of three independent vertices, out of which the model could have chosen any at any place. The comparison through the MSE loss was not developed enough to determine that a correct vertex prediction was correct, if it was a different order than the label. Thus, the model may not have had the opportunity to make a guess that is rated as correct with a probability higher than $\frac{1}{3}$.
+
+The combination of learning rate and this probability might have caused that problem to arise. From the model's point of view, guessing the real vertices must have not been worth it compared to approximating the center of the triangle. With this strategy, the model tried to minimize the punishment received through the quadratic nature of the MSE loss function.
 
 This seems to be a problem that is very specific for the demonstration and is likely no an inherent issue with the more general approach.
 
-\section{Goals}
+Otherwise, the problems can be attributed to the time and resource constrains faced during this work.
+
+\section{Goals and Questions}
 
 The minimal goal has been achieved and the first question has been answered. It is a possible to approximate shapes in a raster image with a vector representation using a neural network that is trained on automatically generated data, as the demonstration has shown. The deep learning model had some difficulties with determining the vertices of triangles. It also could not achieve usable accuracy with the other shapes, but this can be attributed to the time and resource constrains.
 
 This leads to the second question. \emph{What strategies or measures have to be taken to make this [approach] feasible?}
-This question could be answered as well. Using a Convolutional Neural Network with multi-task learning was not capable correctly approximating the shapes.
+This question could be answered as well. The convolutional neural network with multi-task learning was not capable to correctly approximating all four shapes. With minor changes to the model and the training process, and with more training being conducted overall, it might have been possible. With those measures, as well as through increasing the complexity of the model, neural networks should be able to be trained effectively on generated data to learn to do raster vectorization.
 
-\section{Approach}
-
-The demonstration has been done in a limited scope and does not provide a basis for making general statements about the usage of generated data for raster vectorization.
-
-That being said, The model in the demonstration has shown that a neural network that has been trained on randomly generated raster-vector representation pairs can produce results that resemble the original raster image.
-No limiting factors habe been observed that would hinder the scaling of this approach, and there are no apparent reasons for why a neural network with sufficient complexity and training should not be able to perform vectorization of simple raster images.
+The last questions could only partially be answered: \emph{What performance can be achieved?} and \emph{What are the limitations and pitfalls of this approach?}
+For the performance only a minimal example can be given, however, better performance can certainly be achieved. No severely limiting factors have been observed, and the only pitfall or challenge with the approach is the scaling when working with triangles or polygons in the future. The problem that occurred with the triangles would have to be addressed properly when predicting more than three vertices with no given order. One solution is the usage of a neural network architecture with some kind of internal state such as RNNs or reinforcement learning models as explained in \emph{Proposed Model Architecture}.
 
 
-However, it should to be considered that the data that is used in the demonstration is very limited and has not yet reached a point where it could be used in real world applications. The training and evaluation data consist images containing a single shape, and there are a small number of shapes available. Furthermore, only only data related to the position and size of these shapes. The model outputs a numerical representation of the image, which first would have to be converted into an actual vector format such as SVG.
+\section{Evaluating the Approach}
 
-The demonstration specifically lacks the ability to determine the color of a shape, and cannot be used to convert images containing more than one shape and subsequently never learned how to recognize relations between the shapes in an image.
-
-\vspace{0.5cm}
-Those are limitations of demonstration and not necessarily of the approach itself. The model used in the demonstration cannot answer the question of whether those obstacles can be overcome or not.
-
-Those observations could be made:
+The demonstration is too limited to make general statements about the usability and scaling of this the approach.
+However, those observations could be made:
 
 \begin{enumerate}[label=\Roman*.]
-   \item Even a model trained on a CPU can quickly learn to extract shapes from raster images using the generated data.
+   \item Even a model trained on a CPU can quickly learn to extract shapes from raster images using simple generated data.
    \item To scale and improve the model, many optimizations could still be taken in the sections model architecture, training data and training parameter optimization.
-   \item No obstacles have been observed when increasing the complexity of the training data. There is no apparent reason why it should not be possible to make a model learn more complex data.
-   \item A more sophisticated model may be needed for further experiments.
+   \item No obstacles have been observed when increasing the complexity of the training data. There is no apparent reason why it should not be possible to make a model learn more complex data once the vertices of polygons can be extrated.
+   \item A more sophisticated model may be needed for further experiments. Thus, an example architecture has been proposed.
 \end{enumerate}
 
 
 
 \section{Proposed Model Architecture}
 
-There are various strategies and architectures for converting raster images to vector images using deep learning. Based on the experience gained during the progress of this work, an architecture is proposed for projects extending beyond this thesis. A comprehensive structure is given that incorporates elements from various deep learning strategies, combining Recurrent Convolutional Networks with Reinforcement Learning while keeping the multi-task learning nature used in the demonstration.
+There are various strategies and architectures for converting raster images to vector images using deep learning. Based on the experience gained during the progress of this work, an architecture is proposed for projects extending beyond this thesis. A comprehensive structure is given that incorporates elements from various deep learning strategies, combining recurrent convolutional networks with reinforcement learning while keeping the multi-task learning nature used in the demonstration.
 
 \begin{enumerate}[label=\Roman*.]
    \item A random array of numbers is generated, which describe the image and its shapes in a vector-like format.
    \item The input is a raster image represented as an array.
    \item The first layers are convolution and pooling layers. They are applied directly to the input image to extract the relevant features.
-   \item The output of the convolutional layers is directly passed to one or more small, independent fully connected layers. These layers are used to classify the shape as well as the color of the shape and background. A separate CNN might be useful for those layers, but this has to be investigated further. Here, the model could incorporate features from Residual Neural Networks, such that the output of the first CNN layers is directly passed to following layers, without going through the entire CNN block.
+   \item The output of the convolutional layers is directly passed to one or more small, independent fully connected layers. These layers are used to classify the shape as well as determining the color of the shape and background. A separate CNN might be useful for those layers, but this has to be investigated further.
    \item Afterwards, the output of the CNN layers is passed to another set of fully connected layers, which are specific for the shape that has already been predicted. These layers are used to extract the shape-specific data, such as position, rotation, corner points or size.
-   \item The output is then converted into a raster format, which then is compared to the input image
 
-   \item For the loss function two fundamentally different approaches are considered:
+   \item For the evaluation of the model two fundamentally different approaches can be considered:
       \begin{itemize}
-         \item Comparing the output of the model directly with the label. This approach is used in the demonstration and is computationally very efficient.
-         \item Converting the output, together with the previous predictions, into a raster image, and comparing it to the input image. This could lead to more precise results and provides more meaningful feedback to the model.
+         \item Comparing the output of the model directly with the label. This approach is used in the demonstration and is computationally very efficient. It might be beneficial to use this in the first stages of training.
+         \item Converting the output, together with the previous predictions, into a raster image, and comparing it to the input image. This could lead to more precise results and provides more meaningful feedback to the model, but at a higher computation cost. This approach is well-suited for the fine-tuning of a neural network.
       \end{itemize}
 
    \item Recurrent capabilities can be incorporated:
@@ -614,7 +607,7 @@ There are various strategies and architectures for converting raster images to v
 \section{Conclusion}
 
 The demonstration and research have shown that deep learning with generated vector-raster image pairs can be a useful technique for raster vectorization, at least in the first stage of training a neural network. The generation of the random images helps to obtain valuable labeled image pairs.
-However, the demonstration has shown that approximating a raster image in a vector format remains a challenging task even with an infinite amount of training data available. The model in the demonstration has been able to learn how to classify the four shapes, and could extract the relevant information to roughly approximate most of them; triangles have proven more challenging.
+However, the demonstration has shown that converting a raster image into a vector format remains a challenging task even with an infinite amount of training data available. The model in the demonstration has been able to learn how to classify the four shapes and could extract the relevant information to roughly approximate most of them; But triangles have proven more challenging since the order of their vertices is unpredictable.
 
 Furthermore, an architecture has been proposed that might be able to leverage the advantages of various deep learning architectures and techniques, which could address those challenges. It might be a starting point for future works, and successfully implementing such a neural network and training process might as well result in an efficient way to vectorize raster images in practical applications.
 
@@ -622,6 +615,7 @@ Furthermore, an architecture has been proposed that might be able to leverage th
 %----------------------------------------------%
 % }}}
 %----------------------------------------------%
+
 
 
 %----------------------------------------------%
@@ -659,14 +653,22 @@ Furthermore, an architecture has been proposed that might be able to leverage th
 
 \begin{description}
    \item[Code] The code for the model can be found at the following link or when scanning the QR-Code below: \href{https://github.com/lrshsl/rtov.git}{github.com/lrshsl/RtoV}
-   \item[This Paper] This paper is available as a PDF and latex file at \href{https://github.com/lrshsl/matura-doc/tree/main/matura_thesis}{github.com/lrshsl/matura-doc}
+   \item[This Paper] This paper is available as PDF and latex files at \href{https://github.com/lrshsl/matura-doc/tree/main/matura_thesis}{github.com/lrshsl/matura-doc}
+   \item[Documentation for RtoV] The documentation for RtoV is available at\\ \href{https://github.com/lrshsl/rtov/tree/main/docs/}{github.com/lrshsl/RtoV/tree/main/docs/}
 \end{description}
 
 
-\begin{figure}[b]
+\begin{figure}[H]
    \centering
    \includegraphics{../rc/images/QrCode_LinkRepo.png}
    \caption{Link to the github repository with the code for the demonstration}
+\end{figure}
+
+
+\begin{figure}[H]
+   \centering
+   \includegraphics{../rc/images/QrCode_LinkDocs.png}
+   \caption{Link to the documentation for the RtoV demonstration}
 \end{figure}
 
 \pagebreak
@@ -676,17 +678,18 @@ The following illustrations are example outputs of the \emph{test} command of th
 
 \begin{figure}[H]
    \includegraphics[width=1.0\textwidth]{../rc/images/all_shapes_approx_visual1_condensed.png}
-   \label{fig:results_demonstration1}
+   \label{fig:results_demonstration1_condensed}
+   \caption{Output of the model}
 \end{figure}
 
 \begin{figure}[H]
    \includegraphics[width=1.0\textwidth]{../rc/images/all_shapes_approx_visual2_condensed.png}
-   \label{fig:results_demonstration2}
+   \label{fig:results_demonstration2_condensed}
 \end{figure}
 
 \begin{figure}[H]
    \includegraphics[width=1.0\textwidth]{../rc/images/all_shapes_approx_visual3_condensed.png}
-   \label{fig:results_demonstration3}
+   \label{fig:results_demonstration3_condensed}
 \end{figure}
 
 %----------------------------------------------%
